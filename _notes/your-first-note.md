@@ -1,5 +1,7 @@
 ---
 title: First Note
+desc: "This is your first note, take note of it!"
+has_child: true
 ---
 <hr>
 ## Table of Contents
@@ -52,7 +54,7 @@ You may embed media files within a note using HTML5 media tags. Here's an exampl
 
 "Jazzy Frenchy" by Benjamin Tissot from bensound.com
 <audio controls>
-  <source src="/assets/jazzyfrenchy.mp3" type="audio/mpeg">
+  <source src="/assets/media/jazzyfrenchy.mp3" type="audio/mpeg">
   Your browser does not support the audio element.
 </audio>
 
@@ -85,10 +87,13 @@ Lists work as expected:
 - List element A
 - List element B
 - List element C
+  - Sublist
+    - Subsublist
+      1. subsubsublist
 
 1. List element
 2. List element
-3. List element
+3. List element  
 
 If you'd like to quote other people, consider using quote blocks:
 
@@ -96,7 +101,7 @@ If you'd like to quote other people, consider using quote blocks:
 
 And of course, images look great:
 
-<img src="/assets/image.jpg"/>
+<img src="/assets/media/image.jpg"/>
 
 You can also ==highlight some content== by wrapping it with `==`.
 

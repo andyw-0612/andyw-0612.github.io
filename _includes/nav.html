@@ -1,87 +1,86 @@
 <div class="site-header">
     <a class="internal-link" href="{{ site.baseurl }}/" id="home-link">{{ site.title }}</a>
 </div>
-<div class="toc-container">
+<div class="side-nav-container">
     {% assign note_items = site.notes | sort: "title" %}
 
     {% for note_item in note_items %}
 
         <!-- Check if current page is a parent page -->
         {%- if note_item.has_child -%}
-        {%- assign openable_class = "openable" -%}
+            {%- assign openable_class = "openable" -%}
         {%- else -%}
-        {%- assign openable_class = nil -%}
+            {%- assign openable_class = nil -%}
         {%- endif -%}
 
         <!-- If this is a child page, continue since we already displayed it when
         we looped through the parent page-->
         {%- if note_item.has_parent -%}
-        {%- continue -%}
+            {%- continue -%}
         {%- endif -%}
 
-        <!-- If we are on the current page-->
-        {%- if page.title == note_item.title -%}
-        <div class="toc-feed {{openable_class}}" style="background-color: var(--color-bg-sub); font-weight: 500;">
-        {%- else -%}
-        <div class="toc-feed {{openable_class}}">
-        {%- endif -%}
+        <div class="side-nav-feed {{openable_class}}">
+            
+            <!-- If we are on the current page-->
+            {%- if page.title == note_item.title -%}
+                {%- assign current_page = "current-page"-%}
+            {%- else -%}
+                {%- assign current_page = nil -%}
+            {%- endif -%}
 
-        <!-- If the page has children pages -->
-        {%- if openable_class != nil -%}
-            <img src="{{ '/assets/img/drop-down-arrow.png' | relative_url }}" class="dropdown-button drop-down-img"
+            <a href="{{ site.baseurl }}{{note_item.url}}" class="toc-link {{ current_page }}">
+                <div class="toc-title">
+                {{ note_item.title }}
+                </div>
+            </a>
+
+            <!--If the current page has a child  -->
+            {%- if note_item.has_child -%}
+            <img src="{{ '/assets/media/drop-down-arrow.png' | relative_url }}" class="drop-down-img {{ current_page }}"
             {%- if page.has_parent == note_item.title -%} style="transform: rotate(180deg);" 
             {%- else -%} style="transform: rotate(0);" {%- endif -%}>
-        {%- endif -%}
 
-        <a href="{{ site.baseurl }}{{note_item.url}}" class="toc-link">
-            <div class="writinglist-title side-nav-title">
-              {{ note_item.title }}
-            </div>
-        </a>
+            <!-- Add a wrapper div and check if we're currently on a child page
+                if so, we have the collapsible navigation open by default-->
+            <div class="child-wrapper" {%- if page.has_parent == note_item.title -%} 
+            style="display: block;" {%- else -%} style="display: none" {%- endif -%}>
 
-        </div>
+            <!-- we assign child_pages to the markdown files where its parent equal to the parent
+            page title -->
+                {% assign child_pages = site.notes | where: "has_parent", note_item.title %}
 
-        <!--If the current page has a child  -->
-        {%- if note_item.has_child -%}
+                <!-- Loop through them -->
+                {% for child_p in child_pages %}
 
-        <!-- Add a wrapper div and check if we're currently on a child page
-            if so, we have the collapsible navigation open by default-->
-        <div class="child-wrapper" {%- if page.has_parent == note_item.title -%} 
-        style="display: block;" {%- else -%} style="display: none" {%- endif -%} >
+                    <!-- If we are on the current page-->
+                    {%- if page.title == child_p.title -%}
+                        {%- assign current_page = "current-page"-%}
+                    {%- else -%}
+                        {%- assign current_page = nil -%}
+                    {%- endif -%}
+    
+                    <div class="side-nav-feed">
+                    
+                    <a href="{{ site.baseurl }}{{child_p.url}}" class="toc-link {{ current_page }}">
+                        <div class="toc-title child-link">
+                            {{ child_p.title }}
+                        </div>
+                    </a>
 
-        <!-- we assign child_pages to the markdown files where its parent equal to the parent
-        page title -->
-            {% assign child_pages = site.notes | where: "has_parent", note_item.title%}
-
-            <!-- Loop through them -->
-            {% for child_p in child_pages %}
-
-                <!-- Assign a unique id to each child pages and when we're on the child page,
-                we will target this id to "light it up", indicating we're currently on the page -->
-                <!-- If we are on the current page-->
-                {%- if page.title == child_p.title -%}
-                <div class="toc-feed" style="background-color: var(--color-bg-sub); font-weight: 500;">
-                {%- else -%}
-                <div class="toc-feed">
-                {%- endif -%}
-
-                <a href="{{ site.baseurl }}{{child_p.url}}" class="toc-link">
-                    <div class="writinglist-title side-nav-title child-link">
-                      {{ child_p.title }}
                     </div>
-                </a>
 
-                </div>
+                {% endfor %}
 
-            {% endfor %}
+            </div>
+
+            {%- endif -%}
 
         </div>
-
-
-        {%- endif -%}
 
     {%- endfor -%}
+
 </div>
+
 <style>
     .toc-link::after{
         content: none;
@@ -89,13 +88,66 @@
     }
     .toc-link{
         border: none;
+        padding: 0;
+        flex: 1 0 auto;
     }
-    .toc-container{
+    .side-nav-container{
         line-height: 1;
         overflow-y: scroll;
     }
-    .toc-feed{
-        font-size: 16px;
-        max-height: 40px;
+    .side-nav-feed{
+        font-size: 15.5px;
+        line-height: 2.4;
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .toc-title{
+        padding: 0 0 0 10px;
+        color: #8b88e6;
+    }
+    .child-wrapper{
+        flex: 1 0 auto;
+    }
+    .child-wrapper .toc-title{
+        padding: 0 0 0 25px;
+    }
+    .current-page{
+        font-weight: 600;
+        background-color:#f1f2f5;
+    }
+    .drop-down-img{
+        display: flex;
+        justify-content: center;
+        /* 2.4em to align with the height of the side-nav-feed as its line height is 2.4 */
+        max-height: 2.4em;
+        max-width: 2.4em;
+        padding: 0.75em 0.76em 0.75em 0.76em;
+        box-sizing: border-box;
+        cursor: pointer;
     }
 </style>
+<script type="text/javascript">
+
+    // get all the buttons
+    let collapsible = document.getElementsByClassName("drop-down-img");
+    if (collapsible.length > 0){
+        for (let i = 0; i < collapsible.length; i++){
+            // when the button is clicked
+            collapsible[i].onclick = function() {
+                console.log(this.nextElementSibling);
+
+                let childWrapper = this.nextElementSibling;
+                if (childWrapper.style.display == "none" || !childWrapper.style.display){
+                    childWrapper.style.display = "block";
+                    collapsible[i].style.transform = "rotate(180deg)";
+                }
+                else if (childWrapper.style.display == "block"){
+                    childWrapper.style.display = "none";
+                    collapsible[i].style.transform = "rotate(0)";
+
+                }
+            }
+        }
+    }
+
+</script>
