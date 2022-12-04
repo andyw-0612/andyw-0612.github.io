@@ -1,3 +1,101 @@
-<div class="nav-container">
-    <a class="internal-link" href="{{ site.baseurl }}/"><b>{{ site.title }}</b></a>
+<div class="site-header">
+    <a class="internal-link" href="{{ site.baseurl }}/" id="home-link">{{ site.title }}</a>
 </div>
+<div class="toc-container">
+    {% assign note_items = site.notes | sort: "title" %}
+
+    {% for note_item in note_items %}
+
+        <!-- Check if current page is a parent page -->
+        {%- if note_item.has_child -%}
+        {%- assign openable_class = "openable" -%}
+        {%- else -%}
+        {%- assign openable_class = nil -%}
+        {%- endif -%}
+
+        <!-- If this is a child page, continue since we already displayed it when
+        we looped through the parent page-->
+        {%- if note_item.has_parent -%}
+        {%- continue -%}
+        {%- endif -%}
+
+        <!-- If we are on the current page-->
+        {%- if page.title == note_item.title -%}
+        <div class="toc-feed {{openable_class}}" style="background-color: var(--color-bg-sub); font-weight: 500;">
+        {%- else -%}
+        <div class="toc-feed {{openable_class}}">
+        {%- endif -%}
+
+        <!-- If the page has children pages -->
+        {%- if openable_class != nil -%}
+            <img src="{{ '/assets/img/drop-down-arrow.png' | relative_url }}" class="dropdown-button drop-down-img"
+            {%- if page.has_parent == note_item.title -%} style="transform: rotate(180deg);" 
+            {%- else -%} style="transform: rotate(0);" {%- endif -%}>
+        {%- endif -%}
+
+        <a href="{{ site.baseurl }}{{note_item.url}}" class="toc-link">
+            <div class="writinglist-title side-nav-title">
+              {{ note_item.title }}
+            </div>
+        </a>
+
+        </div>
+
+        <!--If the current page has a child  -->
+        {%- if note_item.has_child -%}
+
+        <!-- Add a wrapper div and check if we're currently on a child page
+            if so, we have the collapsible navigation open by default-->
+        <div class="child-wrapper" {%- if page.has_parent == note_item.title -%} 
+        style="display: block;" {%- else -%} style="display: none" {%- endif -%} >
+
+        <!-- we assign child_pages to the markdown files where its parent equal to the parent
+        page title -->
+            {% assign child_pages = site.notes | where: "has_parent", note_item.title%}
+
+            <!-- Loop through them -->
+            {% for child_p in child_pages %}
+
+                <!-- Assign a unique id to each child pages and when we're on the child page,
+                we will target this id to "light it up", indicating we're currently on the page -->
+                <!-- If we are on the current page-->
+                {%- if page.title == child_p.title -%}
+                <div class="toc-feed" style="background-color: var(--color-bg-sub); font-weight: 500;">
+                {%- else -%}
+                <div class="toc-feed">
+                {%- endif -%}
+
+                <a href="{{ site.baseurl }}{{child_p.url}}" class="toc-link">
+                    <div class="writinglist-title side-nav-title child-link">
+                      {{ child_p.title }}
+                    </div>
+                </a>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+
+        {%- endif -%}
+
+    {%- endfor -%}
+</div>
+<style>
+    .toc-link::after{
+        content: none;
+        top: 0;
+    }
+    .toc-link{
+        border: none;
+    }
+    .toc-container{
+        line-height: 1;
+        overflow-y: scroll;
+    }
+    .toc-feed{
+        font-size: 16px;
+        max-height: 40px;
+    }
+</style>

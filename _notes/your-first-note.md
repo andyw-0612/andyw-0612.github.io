@@ -1,6 +1,12 @@
 ---
-title: Your first seed
+title: First Note
 ---
+<hr>
+## Table of Contents
+{:.no_toc .toc-heading}
+1. 
+{:toc}
+<hr>
 
 ### Welcome!
 

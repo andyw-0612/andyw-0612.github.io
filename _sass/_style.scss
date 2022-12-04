@@ -6,6 +6,8 @@ $color-box-background: mix($color-primary, white, 4%);
 $border-radius: 4px;
 $font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial,
   sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+$min-side-nav-width: 260px;
+$color-toc: rgb(85, 85, 85);
 
 body {
   box-sizing: content-box;
@@ -13,10 +15,10 @@ body {
   // margin: 0 auto;
   line-height: 1.7;
   // padding: 4vh 6vw;
-  overflow: hidden;
   color: $color-text;
   font-size: 1rem;
-  height: 100%;
+  height: 100vh;
+  overflow: hidden;
   // max-width: 63em;
 
   @media (min-width: 820px) {
@@ -29,29 +31,66 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  column-gap: 2em;
+  column-gap: 2.5em;
   height: 100vh;
-  padding: 2vh 3vw;
+  padding: 0 3.5vw 0 2vw;
 }
 
+// entire side nav container
 .side-nav{
-  flex: 0 1 260px;
+  flex: 0 0.3 $min-side-nav-width;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  background-color: #fafbfd;
+  border-right: 1px solid #eef1f5;
+}
+
+// before trick to fill up the background
+.side-nav::before{
+  content: " ";
+  display: block;
+  margin-inline-start: -100%;
+  position: absolute;
+  top: 0;
+  width: 100vw;
+  height: 100%;
+  background-color: #fafbfd;
+
+}
+
+// site heading container 
+.site-header{
+  flex: 0 0 $min-side-nav-width;
+  padding: 30px 0;
+  font-size: 24px;
+  max-height: 75px;
+}
+// href to home
+#home-link{
+  text-decoration: none;
 }
 
 .wrapper{
-  flex: 0 1 950px;
+  flex: 0 0.7 920px;
   overflow-y: scroll;
-  padding: 0 1vw;
+  padding: 30px 1vw 2vh 0;
 }
 
 .wrapper::-webkit-scrollbar{
   display: none;
 }
 
+@media (max-width: 64em) {
+  // body{
+  //   display: none;
+  // }
+}
+
 time {
   display: block;
   color: $color-subtext;
-  margin: 0.5em 0 1em;
+  margin: 0.5em 0 0.6em;
 }
 
 footer {
@@ -85,8 +124,25 @@ hr {
   width: 100%;
   border: 0;
   height: 1px;
-  margin: 1.5em 0;
+  margin: 1.1em 0 1.75em 0;
   background: $color-border;
+}
+
+.toc-heading{
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  margin-top: 0.3em;
+  text-transform: uppercase;
+}
+
+#markdown-toc, .toc-heading{
+  margin-top: 0.3em;
+  color: $color-toc;
+}
+
+#markdown-toc li a{
+  color: $color-toc;
 }
 
 h1,
@@ -96,8 +152,25 @@ h4,
 h5,
 h6 {
   line-height: 1.3;
-  margin-bottom: 0;
   padding-bottom: 0;
+  margin: 0.75em 0;
+}
+
+h1:first-of-type{
+  margin: 0.5em 0 0 0;
+}
+
+h1{
+  font-size: 36px;
+  font-weight: 300;
+}
+h2{
+  font-size: 24px;
+  font-weight: 500;
+}
+h3{
+  font-size: 20px;
+  font-weight: 500;
 }
 
 a {
@@ -159,4 +232,8 @@ code {
 .invalid-link-brackets {
   color: #ccc;
   cursor: help;
+}
+
+li{
+  padding: 0.1em;
 }

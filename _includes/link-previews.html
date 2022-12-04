@@ -4,6 +4,9 @@
     border-color: #8b88e6;
     background-color: #efefff;
   }
+  #markdown-toc li a::after{
+    content: " ";
+  }
 
   #tooltip-wrapper {
     background: white;
@@ -136,5 +139,5 @@
     });
   }
 
-  document.querySelectorAll('{{ include.wrapperQuerySelector }} a').forEach(setupListeners);
+  document.querySelectorAll('{{ include.wrapperQuerySelector }} .internal-link').forEach(setupListeners);
 </script>
