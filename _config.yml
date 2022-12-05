@@ -32,7 +32,7 @@ sass:
 collections:
   notes:
     output: true
-    permalink: /:slug
+    permalink: /:name
 
 defaults:
   - scope:
