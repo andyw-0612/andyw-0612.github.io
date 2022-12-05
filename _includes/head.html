@@ -38,6 +38,21 @@
   <meta property="og:image" content="{{ site.url }}{{ page.image }}">
   {% endif %}
 
+  <!-- CSS -->
+  <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/vendor/KatexStyle.css"/>
+
+  <!-- JavaScript -->
+  <script defer src="{{ site.baseurl }}/assets/js/vendor/KatexScript.js"></script>
+  <script defer src="{{ site.baseurl }}/assets/js/vendor/KatexAutoRender.js"
+          onload="renderMathInElement(document.body,{
+    delimiters: [
+      { left: '$$',  right: '$$',  display: true  },
+      { left: '$',   right: '$',   display: false },
+      { left: '\\[', right: '\\]', display: true  },
+      { left: '\\(', right: '\\)', display: false }
+  ]});">
+  </script>
+
   <title>
     {% if page.id == "home" %}
       {{ site.title }}

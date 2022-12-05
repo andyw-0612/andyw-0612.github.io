@@ -99,16 +99,17 @@
     }
     .side-nav-feed{
         font-size: 15.5px;
-        line-height: 2.4;
+        line-height: 1.5;
         display: flex;
     }
     .toc-title{
-        padding: 0 0 0 17px;
+        padding: 8px 0 8px 17px;
         color: #8b88e6;
         flex: 1 1 auto;
     }
     .child-wrapper .toc-title{
-        padding: 0 0 0 30px;
+        padding-left: 30px;
+        padding-right: 30px;
     }
     .current-page{
         font-weight: 600;
@@ -117,10 +118,11 @@
     .drop-down-img{
         display: flex;
         justify-content: center;
-        /* 2.4em to align with the height of the side-nav-feed as its line height is 2.4 */
-        max-height: 2.4em;
-        max-width: 2.4em;
-        padding: 0.75em 0.76em 0.75em 0.76em;
+        /* 1.5em to align with the height of the side-nav-feed as its line height is 1.5 
+        then add 16px to account for both top and bottom padding */
+        max-height: calc(1.5em + 16px);
+        max-width: calc(1.5em + 16px);
+        padding: 0.79em 0.81em 0.79em 0.81em;
         box-sizing: border-box;
         cursor: pointer;
         flex: 0 0 auto;

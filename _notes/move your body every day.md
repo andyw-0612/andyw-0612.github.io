@@ -6,6 +6,8 @@ has_parent: "First Note"
 
 Move your body every day. Benefits include:
 
+$$ x = some random math$$
+
 - Improved sleep quality
 - Less risk of chronic disease
 - Increased productivity
