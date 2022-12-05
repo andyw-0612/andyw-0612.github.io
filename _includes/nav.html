@@ -33,49 +33,51 @@
                 {{ note_item.title }}
                 </div>
             </a>
-
-            <!--If the current page has a child  -->
             {%- if note_item.has_child -%}
-            <img src="{{ '/assets/media/drop-down-arrow.png' | relative_url }}" class="drop-down-img {{ current_page }}"
-            {%- if page.has_parent == note_item.title -%} style="transform: rotate(180deg);" 
-            {%- else -%} style="transform: rotate(0);" {%- endif -%}>
-
-            <!-- Add a wrapper div and check if we're currently on a child page
-                if so, we have the collapsible navigation open by default-->
-            <div class="child-wrapper" {%- if page.has_parent == note_item.title -%} 
-            style="display: block;" {%- else -%} style="display: none" {%- endif -%}>
-
-            <!-- we assign child_pages to the markdown files where its parent equal to the parent
-            page title -->
-                {% assign child_pages = site.notes | where: "has_parent", note_item.title %}
-
-                <!-- Loop through them -->
-                {% for child_p in child_pages %}
-
-                    <!-- If we are on the current page-->
-                    {%- if page.title == child_p.title -%}
-                        {%- assign current_page = "current-page"-%}
-                    {%- else -%}
-                        {%- assign current_page = nil -%}
-                    {%- endif -%}
-    
-                    <div class="side-nav-feed">
-                    
-                    <a href="{{ site.baseurl }}{{child_p.url}}" class="toc-link {{ current_page }}">
-                        <div class="toc-title child-link">
-                            {{ child_p.title }}
-                        </div>
-                    </a>
-
-                    </div>
-
-                {% endfor %}
-
-            </div>
-
+                <img src="{{ '/assets/media/drop-down-arrow.png' | relative_url }}" class="drop-down-img {{ current_page }}"
+                {%- if page.has_parent == note_item.title -%} style="transform: rotate(180deg);" 
+                {%- else -%} style="transform: rotate(0);" {%- endif -%}>
             {%- endif -%}
+        </div>
+
+        <!--If the current page has a child  -->
+        {%- if note_item.has_child -%}
+
+        <!-- Add a wrapper div and check if we're currently on a child page
+            if so, we have the collapsible navigation open by default-->
+        <div class="child-wrapper" {%- if page.has_parent == note_item.title -%} 
+        style="display: block;" {%- else -%} style="display: none" {%- endif -%}>
+
+        <!-- we assign child_pages to the markdown files where its parent equal to the parent
+        page title -->
+            {% assign child_pages = site.notes | where: "has_parent", note_item.title %}
+
+            <!-- Loop through them -->
+            {% for child_p in child_pages %}
+
+                <!-- If we are on the current page-->
+                {%- if page.title == child_p.title -%}
+                    {%- assign current_page = "current-page"-%}
+                {%- else -%}
+                    {%- assign current_page = nil -%}
+                {%- endif -%}
+
+                <div class="side-nav-feed">
+                
+                <a href="{{ site.baseurl }}{{child_p.url}}" class="toc-link {{ current_page }}">
+                    <div class="toc-title child-link">
+                        {{ child_p.title }}
+                    </div>
+                </a>
+
+                </div>
+
+            {% endfor %}
 
         </div>
+
+        {%- endif -%}
+
 
     {%- endfor -%}
 
@@ -89,7 +91,7 @@
     .toc-link{
         border: none;
         padding: 0;
-        flex: 1 0 auto;
+        flex: 1 1 auto;
     }
     .side-nav-container{
         line-height: 1;
@@ -99,17 +101,14 @@
         font-size: 15.5px;
         line-height: 2.4;
         display: flex;
-        flex-wrap: wrap;
     }
     .toc-title{
-        padding: 0 0 0 10px;
+        padding: 0 0 0 17px;
         color: #8b88e6;
-    }
-    .child-wrapper{
-        flex: 1 0 auto;
+        flex: 1 1 auto;
     }
     .child-wrapper .toc-title{
-        padding: 0 0 0 25px;
+        padding: 0 0 0 30px;
     }
     .current-page{
         font-weight: 600;
@@ -124,6 +123,7 @@
         padding: 0.75em 0.76em 0.75em 0.76em;
         box-sizing: border-box;
         cursor: pointer;
+        flex: 0 0 auto;
     }
 </style>
 <script type="text/javascript">
@@ -134,9 +134,9 @@
         for (let i = 0; i < collapsible.length; i++){
             // when the button is clicked
             collapsible[i].onclick = function() {
-                console.log(this.nextElementSibling);
+                console.log(this.parentElement.nextElementSibling);
 
-                let childWrapper = this.nextElementSibling;
+                let childWrapper = this.parentElement.nextElementSibling;
                 if (childWrapper.style.display == "none" || !childWrapper.style.display){
                     childWrapper.style.display = "block";
                     collapsible[i].style.transform = "rotate(180deg)";
