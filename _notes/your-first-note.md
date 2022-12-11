@@ -95,6 +95,13 @@ Lists work as expected:
 2. List element
 3. List element  
 
+| head1        | head two          | three |
+|:-------------|:------------------|:------|
+| ok           | good swedish fish | nice  |
+| out of stock | good and plenty   | nice  |
+| ok           | good `oreos`      | hmm   |
+| ok           | good `zoute` drop | yumm  |
+
 If you'd like to quote other people, consider using quote blocks:
 
 > Lorem ipsum dolor sit amet

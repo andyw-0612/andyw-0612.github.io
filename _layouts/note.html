@@ -11,13 +11,13 @@ layout: default
   </div>
 
   <div id="notes-entry-container">
-    <content>
-      {% if page.type != 'pages' and page.desc and page.desc != "" %}
-      <time datetime="{{ page.last_modified_at | date_to_xmlschema }}">
-      {{ page.desc }}
-      </time>
-      {% endif %}
+    {% if page.type != 'pages' and page.desc and page.desc != "" %}
+    <time datetime="{{ page.last_modified_at | date_to_xmlschema }}">
+    {{ page.desc }}
+    </time>
+    {% endif %}
 
+    <content>
       {{ content }}
       <p>This line appears after every note.</p>
     </content>

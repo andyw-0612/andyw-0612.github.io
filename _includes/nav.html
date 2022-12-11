@@ -1,5 +1,10 @@
 <div class="site-header">
     <a class="internal-link" href="{{ site.baseurl }}/" id="home-link">{{ site.title }}</a>
+    <a id="hamburger-menu">
+        <div class="menu-icon"></div>
+        <div class="menu-icon center-menu-icon"></div>
+        <div class="menu-icon"></div>
+    </a>
 </div>
 <div class="side-nav-container">
     {% assign note_items = site.notes | sort: "title" %}
@@ -28,13 +33,13 @@
                 {%- assign current_page = nil -%}
             {%- endif -%}
 
-            <a href="{{ site.baseurl }}{{note_item.url}}" class="toc-link {{ current_page }}">
-                <div class="toc-title">
+            <a href="{{ site.baseurl }}{{note_item.url}}" class="toc-link">
+                <div class="toc-title {{ current_page }}">
                 {{ note_item.title }}
                 </div>
             </a>
             {%- if note_item.has_child -%}
-                <img src="{{ '/assets/media/drop-down-arrow.png' | relative_url }}" class="drop-down-img {{ current_page }}"
+                <img src="{{ '/assets/media/drop-down-arrow.png' | relative_url }}" class="drop-down-img"
                 {%- if page.has_parent == note_item.title -%} style="transform: rotate(180deg);" 
                 {%- else -%} style="transform: rotate(0);" {%- endif -%}>
             {%- endif -%}
@@ -64,8 +69,8 @@
 
                 <div class="side-nav-feed">
                 
-                <a href="{{ site.baseurl }}{{child_p.url}}" class="toc-link {{ current_page }}">
-                    <div class="toc-title child-link">
+                <a href="{{ site.baseurl }}{{child_p.url}}" class="toc-link">
+                    <div class="toc-title child-link {{ current_page }}">
                         {{ child_p.title }}
                     </div>
                 </a>
@@ -84,6 +89,34 @@
 </div>
 
 <style>
+    #hamburger-menu{
+        display: none;
+    }
+    @media (max-width: 810px) {
+        .menu-icon{
+            background-color: rgb(51, 51, 51);
+            height: 0.5px;
+            width: 22px;
+            border-radius: 20px;
+            border: 1px solid rgb(51, 51, 51);
+        }
+        .center-menu-icon{
+            margin: 5px 0;
+        }
+        #hamburger-menu::after{
+            display: none;
+        }
+        #hamburger-menu{
+            cursor: pointer;
+            border: none;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            flex: 1 1 auto;
+            justify-content: center;
+            padding-top: 6px;
+        }
+    }
     .toc-link::after{
         content: none;
         top: 0;
@@ -96,6 +129,12 @@
     .toc-link:hover, .drop-down-img:hover{
         background-color:#f1f2f5;
     }
+    @media (min-width: 811px){
+        /* avoid closing the navbar in mobile then switching the window size and the navbar is hidden */
+        .side-nav-container{
+            display: block !important;
+        }
+    }
     .side-nav-container{
         line-height: 1;
         overflow-y: scroll;
@@ -103,10 +142,10 @@
     .side-nav-feed{
         font-size: 15px;
         line-height: 1.5;
-        display: flex;
+        position: relative;
     }
     .toc-title{
-        padding: 8px 0 8px 17px;
+        padding: 8px calc(1.5em + 16px + 5px) 8px 17px;
         color: #8b88e6;
         flex: 1 1 auto;
     }
@@ -122,8 +161,6 @@
         background-color:#f1f2f5;
     }
     .drop-down-img{
-        display: flex;
-        justify-content: center;
         /* 1.5em to align with the height of the side-nav-feed as its line height is 1.5 
         then add 16px to account for both top and bottom padding */
         max-height: calc(1.5em + 16px);
@@ -131,10 +168,14 @@
         padding: 0.79em 0.81em 0.79em 0.81em;
         box-sizing: border-box;
         cursor: pointer;
-        flex: 0 0 auto;
+        position: absolute;
+        right: 0;
+        top: 0;
     }
 </style>
 <script type="text/javascript">
+
+    const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
 
     // get all the buttons
     let collapsible = document.getElementsByClassName("drop-down-img");
@@ -156,6 +197,14 @@
                 }
             }
         }
+    }
+
+    let hamburgerMenu = document.getElementById("hamburger-menu");
+    let sideNavContainer = document.getElementsByClassName("side-nav-container")[0];
+    console.log(sideNavContainer);
+
+    hamburgerMenu.onclick = function() {
+        sideNavContainer.style.display = (window.getComputedStyle(sideNavContainer).display == "none") ? "block" : "none";
     }
 
 </script>

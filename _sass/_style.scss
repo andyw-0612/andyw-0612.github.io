@@ -1,5 +1,5 @@
 $color-primary: hsl(0, 0%, 0%);
-$color-text: hsl(0, 0%, 5%);
+$color-text: rgb(51, 51, 51);
 $color-subtext: hsl(0, 0%, 30%);
 $color-border: #8b88e6;
 $color-hr: #d9d9d9;
@@ -17,15 +17,56 @@ body {
   line-height: 1.7;
   // padding: 4vh 6vw;
   color: $color-text;
-  font-size: 1rem;
+  font-size: 0.95rem;
   height: 100vh;
   overflow: hidden;
   // max-width: 63em;
+  overflow-wrap: break-word;
 
   @media (min-width: 840px) {
-    font-size: 1.2rem;
+    font-size: 1.15rem;
   }
 }
+
+li::marker{
+  color: rgba(51, 51, 51, 0.75);
+}
+
+table {
+  border-spacing: 0;
+  display: block;
+  overflow-x: auto;
+  min-width: 100%; 
+  // border-radius: 4px;
+  // box-shadow: 0 4px 4px rgba(0, 0, 0, 0.12), 0 4px 4px rgba(0, 0, 0, 0.12);
+}
+
+td,
+th {
+  border-bottom: 1px solid #eaeaea;
+  padding: 0.6rem 0.85rem; 
+  min-width: 100px;}
+
+td:first-child,
+th:first-child {
+  padding-left: 0; 
+}
+
+td:last-child,
+th:last-child {
+  padding-right: 0; 
+
+}
+table thead th, table thead td{
+  border-width: 0 0 2px;
+}
+
+@media (min-width: 40rem) {
+  table {
+    display: table;
+    overflow-x: initial; } 
+  }
+
 
 // outer most container
 .container{
@@ -60,15 +101,12 @@ body {
 
 // site heading container 
 .site-header{
-  flex: 0 0 $min-side-nav-width;
   padding: 30px 10px;
   font-size: 24px;
   min-height: 90px;
+  display: block;
 }
-// href to home
-#home-link{
-  text-decoration: none;
-}
+
 
 .wrapper{
   flex: 0 0.65 910px;
@@ -173,11 +211,11 @@ h1{
   font-weight: 300;
 }
 h2{
-  font-size: 24px;
+  font-size: 26px;
   font-weight: 500;
 }
 h3{
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 500;
 }
 
@@ -193,7 +231,7 @@ a {
   text-decoration: none;
   border-bottom: 1px solid $color-border;
   color: $color-primary;
-  &:not(.toc-link):hover {
+  &:not(.toc-link, #hamburger-menu):hover {
     color: black !important;
     background: #fffaf1;
   }
@@ -211,17 +249,13 @@ a {
   }
 }
 // everything except the side nav bar
-:not(.toc-link):focus {
+:not(.toc-link, #hamburger-menu):focus {
   background: #ffe8bc !important;
   color: black !important;
 }
 
-#notes-entry-container {
-  display: grid;
-  grid-gap: 2em;
-  grid-template-areas:
-    "content"
-    "side";
+audio{
+  max-width: 100%;
 }
 
 .backlink-box {
@@ -254,19 +288,25 @@ li{
 
 @media (max-width: 810px) {
   body{
-    overflow: scroll;
+    overflow-y: scroll;
   }
   .container{
     display: block;
     padding: 0;
   }
   .site-header{
-    padding: 16px 20px;
+    padding: 16px 20px 10px 20px;
     min-height: 35px;
     font-size: 20px;
   }
+  // this ensures that when the navbar is closed, the padding bottom of site header is small
+  // but when it's open, there's still a resonable amount of gap in between the two
+  .side-nav-container{
+    margin-top: 6px;
+    display: none;
+  }
   .toc-title{
-    padding: 12px 0 12px 17px !important;
+    padding: 12px calc(1.5em + 24px + 5px) 12px 17px !important;
   }
   .side-nav{
     padding-bottom: 0.75em;
@@ -275,5 +315,13 @@ li{
     max-height: calc(1.5em + 24px) !important;
     max-width: calc(1.5em + 24px) !important;
     padding: calc(0.79em + 3px) calc(0.81em + 3px) calc(0.79em + 3px) calc(0.81em + 3px) !important;
+  }
+  // href to home
+  #home-link{
+    text-decoration: none;
+    flex: 0 1 auto;
+  }
+  .site-header{
+    display: flex;
   }
 }
