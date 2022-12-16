@@ -12,15 +12,21 @@ class EmbedImages < Jekyll::Generator
             # this is for image embeds
 
             # check for image embeds first since the notes embed regex will match image embeds as well
-            pattern = /!\[\[(.*?)\]\]/
+            pattern = /!\[\[(.*?.*)\]\]/
 
-            matched_img = current_note.content.match(pattern)
+            matched_img_list = current_note.content.scan(pattern)
 
-            if matched_img
-                current_note.content.gsub!(
-                    pattern,
-                    "<img src='#{matched_img[1]}'>"
-                )
+            if matched_img_list
+                matched_img_list.each do |matched_img|
+                    # duplicate the string so original_img will not be pointing to matched_img[0]
+                    original_img = matched_img[0].dup
+                    # modify it so regex will match the '.'
+                    matched_img[0].gsub!(/\./, "\\.")
+                    current_note.content.gsub!(
+                        /!\[\[(.*#{matched_img[0]}.*)\]\]/,
+                        "<img src='#{original_img}'>"
+                    )
+                end
             end
 
             # Convert all Wiki/Roam-style double-bracket link syntax to plain HTML

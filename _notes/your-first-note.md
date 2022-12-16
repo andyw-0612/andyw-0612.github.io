@@ -104,9 +104,22 @@ Lists work as expected:
 
 If you'd like to quote other people, consider using quote blocks:
 
+> [!Info]
 > Lorem ipsum dolor sit amet
+>
+Some more quote block examples with callouts:
+> [!Important Stuff]     
+>
+> Hello
+> This is important
+Then we continue...
+
+> [!This will not appear as a callout] because
+> there's text after it
 
 And of course, images look great:
+
+![[media/image.jpg]]
 
 ![[media/image.jpg]]
 

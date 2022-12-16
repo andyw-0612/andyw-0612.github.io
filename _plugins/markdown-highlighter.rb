@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 # Turns ==something== in Markdown to <mark>something</mark> in output HTML
+# Turns > [!Info] into a callout 
 
 Jekyll::Hooks.register [:notes], :post_convert do |doc|
   replace(doc)
@@ -16,3 +17,4 @@ end
 def replace(doc)
   doc.content.gsub!(/==+([^ ](.*?)?[^ .=]?)==+/, "<mark>\\1</mark>")
 end
+  
