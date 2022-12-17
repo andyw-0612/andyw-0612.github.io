@@ -19,7 +19,7 @@ class ObsidianMarkdown < Jekyll::Generator
                 if matched_text =~ /^>\s*\[!(.*?)\]\s*$/
                     # Replace the first line with the text between "[!" and "]" wrapped in div tags
                     matched_text.sub!(/^>\s*\[!(.*?)\]\s*\n/, "> <div class='callout-title'>#{$1}</div> \n")
-                    # Add "{:class}" to the end of the matched text
+                    # Add "{: .callout}" to the end of the matched text
                     matched_text << ("{: .callout}")
                 
                     # Add a new line at the beginning and end of the matched text

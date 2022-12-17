@@ -107,21 +107,15 @@ If you'd like to quote other people, consider using quote blocks:
 > [!Info]
 > Lorem ipsum dolor sit amet
 >
-Some more quote block examples with callouts:
-> [!Important Stuff]     
+> [!This will not appear as a callout] 
 >
-> Hello
-> This is important
-Then we continue...
-
-> [!This will not appear as a callout] because
-> there's text after it
+> because this is not the first line of the block quote 
 
 And of course, images look great:
 
-![[media/image.jpg]]
+![[notes-media/image.jpg]]
 
-![[media/image.jpg]]
+![[notes-media/image.jpg]]
 
 You can also ==highlight some content== by wrapping it with `==`.
 

@@ -16,3 +16,5 @@ _includes/notes_graph.json
 
 # mac ds store
 .DS_Store
+
+.vscode

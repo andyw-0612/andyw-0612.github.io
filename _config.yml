@@ -33,6 +33,9 @@ collections:
   notes:
     output: true
     permalink: /:path
+  notes-media:
+    output: true
+    permalink: notes-media/:path
 
 defaults:
   - scope:
