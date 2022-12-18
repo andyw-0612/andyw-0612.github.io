@@ -1,0 +1,223 @@
+<div class="site-header">
+    <a class="internal-link" href="{{ site.baseurl }}/" id="home-link">{{ site.title }}</a>
+    <a id="hamburger-menu">
+        <div class="menu-icon"></div>
+        <div class="menu-icon center-menu-icon"></div>
+        <div class="menu-icon"></div>
+    </a>
+</div>
+<div class="side-nav-container">
+    {% assign note_items = site.notes | sort: "title" %}
+
+    {% for note_item in note_items %}
+
+        <!-- Check if current page is a parent page -->
+        {%- if note_item.has_child -%}
+            {%- assign openable_class = "openable" -%}
+        {%- else -%}
+            {%- assign openable_class = nil -%}
+        {%- endif -%}
+
+        <!-- If this is a child page, continue since we already displayed it when
+        we looped through the parent page-->
+        {%- if note_item.has_parent -%}
+            {%- continue -%}
+        {%- endif -%}
+
+        <div class="side-nav-feed {{openable_class}}">
+            
+            <!-- If we are on the current page-->
+            {%- if page.title == note_item.title -%}
+                {%- assign current_page = "current-page"-%}
+            {%- else -%}
+                {%- assign current_page = nil -%}
+            {%- endif -%}
+
+            <a href="{{ site.baseurl }}{{note_item.url}}" class="toc-link">
+                <div class="toc-title {{ current_page }}">
+                {{ note_item.title }}
+                </div>
+            </a>
+            {%- if note_item.has_child -%}
+                <img src="{{ '/assets/media/drop-down-arrow.png' | relative_url }}" class="drop-down-img"
+                {%- if page.has_parent == note_item.title -%} style="transform: rotate(180deg);" 
+                {%- else -%} style="transform: rotate(0);" {%- endif -%}>
+            {%- endif -%}
+        </div>
+
+        <!--If the current page has a child  -->
+        {%- if note_item.has_child -%}
+
+        <!-- Add a wrapper div and check if we're currently on a child page
+            if so, we have the collapsible navigation open by default-->
+        <div class="child-wrapper" {%- if page.has_parent == note_item.title -%} 
+        style="display: block;" {%- else -%} style="display: none" {%- endif -%}>
+
+        <!-- we assign child_pages to the markdown files where its parent equal to the parent
+        page title -->
+            {% assign child_pages = site.notes | where: "has_parent", note_item.title %}
+
+            <!-- Loop through them -->
+            {% for child_p in child_pages %}
+
+                <!-- If we are on the current page-->
+                {%- if page.title == child_p.title -%}
+                    {%- assign current_page = "current-page"-%}
+                {%- else -%}
+                    {%- assign current_page = nil -%}
+                {%- endif -%}
+
+                <div class="side-nav-feed">
+                
+                <a href="{{ site.baseurl }}{{child_p.url}}" class="toc-link">
+                    <div class="toc-title child-link {{ current_page }}">
+                        {{ child_p.title }}
+                    </div>
+                </a>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+        {%- endif -%}
+
+
+    {%- endfor -%}
+
+</div>
+
+<noscript>
+    <!-- if js isn't supported, show everything -->
+    <style>
+        .side-nav-container{
+            display: block;
+        }
+        .child-wrapper{
+            display: block !important;
+        }
+    </style>
+    <footer style="justify-content: center; display: flex;">JS isn't enabled, goodluck with that.</footer>
+</noscript>
+
+<style>
+    #hamburger-menu{
+        display: none;
+    }
+    @media (max-width: 810px) {
+        .menu-icon{
+            background-color: rgb(51, 51, 51);
+            height: 0.5px;
+            width: 22px;
+            border-radius: 20px;
+            border: 1px solid rgb(51, 51, 51);
+        }
+        .center-menu-icon{
+            margin: 5px 0;
+        }
+        #hamburger-menu::after{
+            display: none;
+        }
+        #hamburger-menu{
+            cursor: pointer;
+            border: none;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            flex: 1 1 auto;
+            justify-content: center;
+            padding-top: 6px;
+        }
+    }
+    .toc-link::after{
+        content: none;
+        top: 0;
+    }
+    .toc-link{
+        border: none;
+        padding: 0;
+        flex: 1 1 auto;
+    }
+    .toc-link:hover, .drop-down-img:hover{
+        background-color:#f1f2f5;
+    }
+    @media (min-width: 811px){
+        /* avoid closing the navbar in mobile then switching the window size and the navbar is hidden */
+        .side-nav-container{
+            display: block !important;
+        }
+    }
+    .side-nav-container{
+        line-height: 1;
+        overflow-y: scroll;
+    }
+    .side-nav-feed{
+        font-size: 15px;
+        line-height: 1.5;
+        position: relative;
+    }
+    .toc-title{
+        padding: 8px calc(1.5em + 16px + 5px) 8px 22px;
+        color: #8b88e6;
+        flex: 1 1 auto;
+    }
+    .toc-title.child-link{
+        color: #56535d;
+    }
+    .child-wrapper .toc-title{
+        padding-left: 40px;
+        padding-right: 30px;
+    }
+    .current-page{
+        font-weight: 600;
+        background-color:#f1f2f5;
+    }
+    .drop-down-img{
+        /* 1.5em to align with the height of the side-nav-feed as its line height is 1.5 
+        then add 16px to account for both top and bottom padding */
+        max-height: calc(1.5em + 16px);
+        max-width: calc(1.5em + 16px);
+        padding: 0.79em 0.81em 0.79em 0.81em;
+        box-sizing: border-box;
+        cursor: pointer;
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+</style>
+<script type="text/javascript">
+
+    const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+
+    // get all the buttons
+    let collapsible = document.getElementsByClassName("drop-down-img");
+    if (collapsible.length > 0){
+        for (let i = 0; i < collapsible.length; i++){
+            // when the button is clicked
+            collapsible[i].onclick = function() {
+                console.log(this.parentElement.nextElementSibling);
+
+                let childWrapper = this.parentElement.nextElementSibling;
+                if (childWrapper.style.display == "none" || !childWrapper.style.display){
+                    childWrapper.style.display = "block";
+                    collapsible[i].style.transform = "rotate(180deg)";
+                }
+                else if (childWrapper.style.display == "block"){
+                    childWrapper.style.display = "none";
+                    collapsible[i].style.transform = "rotate(0)";
+
+                }
+            }
+        }
+    }
+
+    let hamburgerMenu = document.getElementById("hamburger-menu");
+    let sideNavContainer = document.getElementsByClassName("side-nav-container")[0];
+    console.log(sideNavContainer);
+
+    hamburgerMenu.onclick = function() {
+        sideNavContainer.style.display = (window.getComputedStyle(sideNavContainer).display == "none") ? "block" : "none";
+    }
+
+</script>
