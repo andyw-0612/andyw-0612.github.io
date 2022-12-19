@@ -120,7 +120,7 @@ If you'd like to quote other people, consider using quote blocks:
 
 And of course, images look great:
 
-````dvds`
+````
 ![[notes-media/image.jpg]]
 ````
 
