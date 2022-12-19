@@ -113,7 +113,9 @@ If you'd like to quote other people, consider using quote blocks:
 
 And of course, images look great:
 
+````
 ![[notes-media/image.jpg]]
+````
 
 ![[notes-media/image.jpg]]
 
