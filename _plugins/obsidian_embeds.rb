@@ -20,7 +20,7 @@ class ObsidianEmbeds < Jekyll::Generator
             # Iterate over each line in the array and transform it in place
             lines.map! do |line|
             # Check if the line starts with 3 or more consecutive backticks and is not followed by spaces
-                if line =~ /^`{2,}[^\s]+$/
+                if line =~ /^`{2,}[^`\s]*$/
                     # Check if the number of consecutive backticks on this line is greater than or equal to the recorded value, 
                     # and the backticks are the only characters on the line
                     if in_code_block && line.count("`") >= consecutive_backticks && line.strip == "`" * line.count("`")

@@ -25,8 +25,6 @@ class ObsidianMarkdown < Jekyll::Generator
                     # Add a new line at the beginning and end of the matched text
                     matched_text.prepend("\n")
                     matched_text << "\n"
-                    puts matched_text        
-
 
                 end
             

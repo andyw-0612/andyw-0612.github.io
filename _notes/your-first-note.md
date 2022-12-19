@@ -103,7 +103,14 @@ Lists work as expected:
 | ok           | good `zoute` drop | yumm  |
 
 If you'd like to quote other people, consider using quote blocks:
-
+```
+ > [!Info]
+ > Lorem ipsum dolor sit amet
+ >
+ > [!This will not appear as a callout] 
+ >
+ > because this is not the first line of the block quote 
+```
 > [!Info]
 > Lorem ipsum dolor sit amet
 >
@@ -113,7 +120,7 @@ If you'd like to quote other people, consider using quote blocks:
 
 And of course, images look great:
 
-````
+````dvds`
 ![[notes-media/image.jpg]]
 ````
 

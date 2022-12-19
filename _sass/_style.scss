@@ -23,8 +23,8 @@ body {
   // max-width: 63em;
   overflow-wrap: break-word;
 
-  @media (min-width: 840px) {
-    font-size: 1.15rem;
+  @media (min-width: 810px) {
+    font-size: 1.08rem;
   }
 }
 
@@ -158,7 +158,20 @@ img {
   max-height: 75vh;
   border-radius: $border-radius;
 }
-
+.callout{
+  border-left: 4px solid rgb(68, 138, 255);
+  border-radius: 5px;
+  background-color: rgba(68, 138, 255, 0.15);
+  margin: 2em 0;
+  color: #5c5962;
+  padding: 0.8em 1.25em;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), 0 3px 10px rgba(0, 0, 0, 0.08);
+}
+.callout-title{
+  font-weight: bold;
+  color: #183385;
+  padding-bottom: 0.2em;
+}
 blockquote{
   margin-left: 0;
   margin-right: 0;
@@ -310,7 +323,7 @@ li{
     display: none;
   }
   .toc-title{
-    padding: 12px calc(1.5em + 24px + 5px) 12px 17px !important;
+    padding: 12px calc(1.4em + 24px + 5px) 12px 17px !important;
   }
   .side-nav{
     padding-bottom: 0.75em;
