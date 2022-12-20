@@ -1,5 +1,4 @@
 class ObsidianEmbeds < Jekyll::Generator
-
     # function to actually generate the site
     def generate(site)
         all_notes = site.collections['notes'].docs
@@ -10,41 +9,36 @@ class ObsidianEmbeds < Jekyll::Generator
         link_extension = !!site.config["use_html_extension"] ? '.html' : ''
         
         all_docs.each do |current_note|
-            # this portion is to ensure the things we parse are not within code blocks
-            in_code_block = false
-            consecutive_backticks = 0
-
-            # Split the input string into an array of lines
-            lines = current_note.content.split("\n")
-
-            # Iterate over each line in the array and transform it in place
-            lines.map! do |line|
-            # Check if the line starts with 3 or more consecutive backticks and is not followed by spaces
-                if line =~ /^`{2,}[^\s]*$/
-                    # Check if the number of consecutive backticks on this line is greater than or equal to the recorded value, 
-                    # and the backticks are the only characters on the line
-                    if in_code_block && line.count("`") >= consecutive_backticks && line.strip == "`" * line.count("`")
-                        # If the conditions are met, set in_code_block to false and consecutive_back_ticks to 0
-                        in_code_block = false
-                        consecutive_backticks = 0
+            # anything inside {% highlight %} tags are ignored
+            # first remove all spaces in the liquid tag
+            if current_note.content.match?(/{%\s*highlight/) and current_note.content.match?(/{%\s*endhighlight\s*%}/)
+                # remove spaces in liquid tags
+                current_note.content.gsub!(/{%\s*highlight/, "{%highlight")
+                current_note.content.gsub!(/{%\s*endhighlight\s*%}/, "{%endhighlight%}")
+                
+                excerpt = current_note.content.split("{%highlight")
+                excerpt.map! do |str|
+                    # if there is an ending delimiter, if not then everything is parsable
+                    if str.include?("{%endhighlight%}")
+                        unparasable = str.split("{%endhighlight%}")[0]
+                        parasable = str.split("{%endhighlight%}")[-1]
+                        # parse image and wikilinks
+                        parsed = parse_wikilink(parse_image_embeds(parasable), all_docs, site, link_extension)
+                        unparasable + "{% endhighlight %}" + parsed
                     else
-                        # If in_code_block is not already true, 
-                        # set it to true and record the number of consecutive backticks
-                        in_code_block = true
-                        consecutive_backticks = line.count("`")
+                        # parse_wikilink and parse_image_embeds returns the modifed string
+                        parse_wikilink(parse_image_embeds(str), all_docs, site, link_extension)
                     end
                 end
-
-                if !in_code_block
-                    # apply all the parser functions
-                    line = parse_image_embeds(line)
-                    line = parse_wikilink(line, all_docs, site, link_extension)
-                end
-                line    
+                
+                # join everything back together with {% highlight since we lost it during split
+                current_note.content = excerpt.join("{% highlight")
+                
+            else
+                # if there are no highlight tags
+                parse_image_embeds(current_note.content)
+                parse_wikilink(current_note.content, all_docs, site, link_extension)
             end
-
-            # Join the transformed lines back into a single string
-            current_note.content = lines.join("\n") 
         end
     end
 
@@ -68,7 +62,7 @@ class ObsidianEmbeds < Jekyll::Generator
                 )
             end
         end
-        
+        # need the return statement for documents with "{%highlight%}", see above code
         str
     end
 
@@ -122,7 +116,7 @@ class ObsidianEmbeds < Jekyll::Generator
         # At this point, all remaining double-bracket-wrapped words are
         # pointing to non-existing pages, so let's turn them into disabled
         # links by greying them out and changing the cursor
-        str = str.gsub(
+        str.gsub!(
         /(?!.*`)\[\[([^\]]+)\]\](?!`.*$)/i, # match on the remaining double-bracket links
         <<~HTML.delete("\n") # replace with this HTML (\\1 is what was inside the brackets)
             <span title='There is no note that matches this link.' class='invalid-link'>
@@ -131,7 +125,7 @@ class ObsidianEmbeds < Jekyll::Generator
             <span class='invalid-link-brackets'>]]</span></span>
         HTML
         )
-
+        # need the return statement for documents with "{%highlight%}", see above code
         str
     end
         
