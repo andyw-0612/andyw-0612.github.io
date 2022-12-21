@@ -84,7 +84,7 @@ class ObsidianEmbeds < Jekyll::Generator
                 # modify it so regex will match the '.'
                 matched_img[0].gsub!(/\./, "\\.")
                 str.sub!(
-                    /!\[\[(.*#{matched_img[0]}.*)\]\]/,
+                    /!\[\[(.*#{matched_img[0]}.*)\]\]/i,
                     "<img src='#{original_img}'>"
                 )
             end
