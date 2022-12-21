@@ -12,7 +12,6 @@
 
 
     
-    {{ first_level_notes | inspect }}
     {% assign note_items = site.notes | sort: "title" %}
 
     {% for note_item in note_items %}
@@ -190,6 +189,7 @@
         position: absolute;
         right: 0;
         top: 0;
+        font-size: inherit;
     }
 </style>
 <script type="text/javascript">

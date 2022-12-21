@@ -18,3 +18,5 @@ _includes/notes_graph.json
 .DS_Store
 
 .vscode
+
+build/
