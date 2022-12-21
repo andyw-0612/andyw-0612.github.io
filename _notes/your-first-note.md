@@ -119,8 +119,9 @@ If you'd like to quote other people, consider using quote blocks:
 > because this is not the first line of the block quote 
 
 And of course, images look great:
-
+{% highlight text %}
 ![[notes-media/image.jpg]]
+{% endhighlight %}
 
 ![[notes-media/image.jpg]]
 
@@ -156,3 +157,11 @@ This digital garden template is free, open-source, and [available on GitHub here
 The easiest way to build your own digital garden based on this template is to read this [step-by-step guide explaining how to set this up from scratch](https://maximevaillancourt.com/blog/setting-up-your-own-digital-garden-with-jekyll).
 
 Go forth, have fun, and learn new something every day! ✌️
+
+
+{%raw%}
+```
+code
+```
+hi
+{%endraw%}

@@ -25,7 +25,7 @@
   
 
   
-  <meta property="article:published_time" content="2022-12-19T23:37:34-08:00">
+  <meta property="article:published_time" content="2022-12-20T18:58:11-08:00">
   <meta property="article:author" content="/">
   
 
@@ -206,11 +206,11 @@
     }
     .side-nav-feed{
         font-size: 14.5px;
-        line-height: 1.4;
+        line-height: 1.5;
         position: relative;
     }
     .toc-title{
-        padding: 8px calc(1.4em + 16px + 5px) 8px 22px;
+        padding: 8px calc(1.5em + 16px + 5px) 8px 22px;
         color: #8b88e6;
         flex: 1 1 auto;
     }
@@ -228,8 +228,8 @@
     .drop-down-img{
         /* 1.5em to align with the height of the side-nav-feed as its line height is 1.5 
         then add 16px to account for both top and bottom padding */
-        max-height: calc(1.4em + 16px);
-        max-width: calc(1.4em + 16px);
+        max-height: calc(1.5em + 16px);
+        max-width: calc(1.5em + 16px);
         padding: 0.79em 0.81em 0.79em 0.81em;
         box-sizing: border-box;
         cursor: pointer;
@@ -266,7 +266,6 @@
 
     let hamburgerMenu = document.getElementById("hamburger-menu");
     let sideNavContainer = document.getElementsByClassName("side-nav-container")[0];
-    console.log(sideNavContainer);
 
     hamburgerMenu.onclick = function() {
         sideNavContainer.style.display = (window.getComputedStyle(sideNavContainer).display == "none") ? "block" : "none";
@@ -296,7 +295,7 @@
 <p>If you’re in a hurry, here’s some quick places to dive in:</p>
 
 <ul>
-  <li>The [[Command palette]] contains most of the commands you need to work with Obsidian. Just press <code class="language-plaintext highlighter-rouge">Ctrl/Cmd-P</code> and start typing.</li>
+  <li>The <span title="There is no note that matches this link." class="invalid-link"><span class="invalid-link-brackets">[[</span>Command palette<span class="invalid-link-brackets">]]</span></span> contains most of the commands you need to work with Obsidian. Just press <code class="language-plaintext highlighter-rouge">Ctrl/Cmd-P</code> and start typing.</li>
   <li>How to <span title="There is no note that matches this link." class="invalid-link"><span class="invalid-link-brackets">[[</span>Create notes|create new notes<span class="invalid-link-brackets">]]</span></span>.</li>
   <li>How to create <span title="There is no note that matches this link." class="invalid-link"><span class="invalid-link-brackets">[[</span>Internal link|internal links<span class="invalid-link-brackets">]]</span></span>
 </li>
@@ -370,7 +369,8 @@
   .back-button:after{
     content:none;
   }
-</style></main>
+</style>
+</main>
         <footer>This is the footer. Include anything you'd like here, like a link to an <a class="internal-link" href="/about">About</a> page.
 </footer>
       </div>

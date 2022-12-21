@@ -25,7 +25,7 @@
   
 
   
-  <meta property="article:published_time" content="2022-12-19T23:37:34-08:00">
+  <meta property="article:published_time" content="2022-12-20T18:58:11-08:00">
   <meta property="article:author" content="/">
   
 
@@ -206,11 +206,11 @@
     }
     .side-nav-feed{
         font-size: 14.5px;
-        line-height: 1.4;
+        line-height: 1.5;
         position: relative;
     }
     .toc-title{
-        padding: 8px calc(1.4em + 16px + 5px) 8px 22px;
+        padding: 8px calc(1.5em + 16px + 5px) 8px 22px;
         color: #8b88e6;
         flex: 1 1 auto;
     }
@@ -228,8 +228,8 @@
     .drop-down-img{
         /* 1.5em to align with the height of the side-nav-feed as its line height is 1.5 
         then add 16px to account for both top and bottom padding */
-        max-height: calc(1.4em + 16px);
-        max-width: calc(1.4em + 16px);
+        max-height: calc(1.5em + 16px);
+        max-width: calc(1.5em + 16px);
         padding: 0.79em 0.81em 0.79em 0.81em;
         box-sizing: border-box;
         cursor: pointer;
@@ -266,7 +266,6 @@
 
     let hamburgerMenu = document.getElementById("hamburger-menu");
     let sideNavContainer = document.getElementsByClassName("side-nav-container")[0];
-    console.log(sideNavContainer);
 
     hamburgerMenu.onclick = function() {
         sideNavContainer.style.display = (window.getComputedStyle(sideNavContainer).display == "none") ? "block" : "none";
@@ -284,7 +283,7 @@
 
   <div id="notes-entry-container">
     
-    <time datetime="2022-12-18T22:26:41-08:00">
+    <time datetime="2022-12-19T23:48:58-08:00">
     This is your first note, take note of it!
     </time>
     
@@ -355,7 +354,7 @@
 
 <p>“Jazzy Frenchy” by Benjamin Tissot from bensound.com</p>
 <audio controls="">
-  <source src="/assets/media/jazzyfrenchy.mp3" type="audio/mpeg"></source>
+  <source src="/assets/media/jazzyfrenchy.mp3" type="audio/mpeg"></source>&lt;/source&gt;
   Your browser does not support the audio element.
 </audio>
 
@@ -460,9 +459,8 @@
   <p>because this is not the first line of the block quote</p>
 </blockquote>
 
-<p>And of course, images look great:</p>
-
-<p><img src="notes-media/image.jpg"></p>
+<p>And of course, images look great:
+Liquid error: internal</p>
 
 <p><img src="notes-media/image.jpg"></p>
 
@@ -494,6 +492,10 @@
 <p>The easiest way to build your own digital garden based on this template is to read this <a href="https://maximevaillancourt.com/blog/setting-up-your-own-digital-garden-with-jekyll" target="_blank">step-by-step guide explaining how to set this up from scratch</a>.</p>
 
 <p>Go forth, have fun, and learn new something every day! ✌️</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>code
+</code></pre></div></div>
+<p>hi</p>
 <div class="footnotes" role="doc-endnotes">
   <ol>
     <li id="fn:1" role="doc-endnote">
@@ -547,7 +549,8 @@ Table of Contents
   .back-button:after{
     content:none;
   }
-</style></main>
+</style>
+</main>
         <footer>This is the footer. Include anything you'd like here, like a link to an <a class="internal-link" href="/about">About</a> page.
 </footer>
       </div>

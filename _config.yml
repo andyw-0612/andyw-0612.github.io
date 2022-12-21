@@ -46,5 +46,10 @@ defaults:
       path: "_notes/**/*.md"
     values:
       layout: "note"
-      
+
+# set math_engine as null as we don't want jekyll to mess with math equations
+# all latex rendering happens at the front-end through katex
+kramdown:
+  math_engine: null
+
 destination: ./build
