@@ -1,7 +1,7 @@
 ---
 title: First Note
 desc: "This is your first note, take note of it!"
-has_child: true
+has_children: true
 ---
 <hr>
 ## Table of Contents

@@ -7,89 +7,68 @@
     </a>
 </div>
 <div class="side-nav-container">
-    {% assign first_level_notes = site.notes | where_exp: "notes", "notes.has_parent == nil" %}
-    {% assign second_level_notes = site.notes | where_exp: "notes", "notes.has_parent != nil" %}
+    {% assign first_level_notes = site.notes | where_exp: "notes", "notes.has_parent == nil" | sort: "title" %}
+    {% assign second_level_notes = site.notes | where_exp: "notes", "notes.has_parent != nil" | sort: "title" %}
 
+    {% for note in first_level_notes %}
 
-    
-    {% assign note_items = site.notes | sort: "title" %}
+        <div class="side-nav-feed">
+            {% comment %}
+                if we're on the current page, we assign the current-page class
+            {% endcomment %}
 
-    {% for note_item in note_items %}
-
-        <!-- Check if current page is a parent page -->
-        {%- if note_item.has_child -%}
-            {%- assign openable_class = "openable" -%}
-        {%- else -%}
-            {%- assign openable_class = nil -%}
-        {%- endif -%}
-
-        <!-- If this is a child page, continue since we already displayed it when
-        we looped through the parent page-->
-        {%- if note_item.has_parent -%}
-            {%- continue -%}
-        {%- endif -%}
-
-        <div class="side-nav-feed {{openable_class}}">
-            
-            <!-- If we are on the current page-->
-            {%- if page.title == note_item.title -%}
-                {%- assign current_page = "current-page"-%}
-            {%- else -%}
-                {%- assign current_page = nil -%}
-            {%- endif -%}
-
-            <a href="{{ site.baseurl }}{{note_item.url}}" class="toc-link">
-                <div class="toc-title {{ current_page }}">
-                {{ note_item.title }}
+            <a href="{{ site.baseurl }}{{note.url}}" class="toc-link">
+                <div class="toc-title {% if page.title == note.title %} current-page {% endif %}">
+                    {{ note.title }}
                 </div>
             </a>
-            {%- if note_item.has_child -%}
+
+            {% comment %}
+                if the note has child pages, then display the drop down arrow    
+
+                if the current page's has_parent attribute points to the current parent page
+                that we're looping through, that means we're currently on a child page whoes parent
+                is the note that we're looping through, if so, set the drop down image to open
+            {% endcomment %}
+
+            {%- if note.has_children -%}
                 <img src="{{ '/assets/media/drop-down-arrow.png' | relative_url }}" class="drop-down-img"
-                {%- if page.has_parent == note_item.title -%} style="transform: rotate(180deg);" 
-                {%- else -%} style="transform: rotate(0);" {%- endif -%}>
+                {% if page.has_parent == note.title %} style="transform: rotate(180deg);" 
+                {%- else -%} style="transform: rotate(0);" {% endif %}>
             {%- endif -%}
-        </div>
 
-        <!--If the current page has a child  -->
-        {%- if note_item.has_child -%}
+            {% comment %}
+                if the note has child pages, assign its child pages to child_pages and loop through 
+                them and display them. All the child pages' has_parent frontmatter should point to
+                their parent page's title (NOT the file name but the frontmatter title)
+            {% endcomment %}
 
-        <!-- Add a wrapper div and check if we're currently on a child page
-            if so, we have the collapsible navigation open by default-->
-        <div class="child-wrapper" {%- if page.has_parent == note_item.title -%} 
-        style="display: block;" {%- else -%} style="display: none" {%- endif -%}>
+            {%- if note.has_children -%}
+            
+                <div class="child-wrapper" {% if page.has_parent == note.title %} 
+                style="display: block;" {% else %} style="display: none" {% endif %}>
 
-        <!-- we assign child_pages to the markdown files where its parent equal to the parent
-        page title -->
-            {% assign child_pages = site.notes | where: "has_parent", note_item.title %}
+                {% assign child_pages = second_level_notes | where: "has_parent", note.title %}
 
-            <!-- Loop through them -->
-            {% for child_p in child_pages %}
-
-                <!-- If we are on the current page-->
-                {%- if page.title == child_p.title -%}
-                    {%- assign current_page = "current-page"-%}
-                {%- else -%}
-                    {%- assign current_page = nil -%}
-                {%- endif -%}
-
-                <div class="side-nav-feed">
+                {% for child_note in child_pages %}
+                    <div class="side-nav-feed">
                 
-                <a href="{{ site.baseurl }}{{child_p.url}}" class="toc-link">
-                    <div class="toc-title child-link {{ current_page }}">
-                        {{ child_p.title }}
+                    <a href="{{ site.baseurl }}{{child_note.url}}" class="toc-link">
+                        <div class="toc-title child-link {% if page.title == child_note.title %} current-page {% endif %}">
+                            {{ child_note.title }}
+                        </div>
+                    </a>
+    
                     </div>
-                </a>
-
+                {% endfor %}
+                
                 </div>
+            {%- endif -%}
 
-            {% endfor %}
 
         </div>
 
-        {%- endif -%}
-
-
-    {%- endfor -%}
+    {% endfor %}
 
 </div>
 
@@ -189,6 +168,7 @@
         position: absolute;
         right: 0;
         top: 0;
+        /* this is needed so the image does not take on footer's font size */
         font-size: inherit;
     }
 </style>
@@ -204,7 +184,7 @@
             collapsible[i].onclick = function() {
                 console.log(this.nextElementSibling);
 
-                let childWrapper = this.parentElement.nextElementSibling;
+                let childWrapper = this.nextElementSibling;
                 if (childWrapper.style.display == "none" || !childWrapper.style.display){
                     childWrapper.style.display = "block";
                     collapsible[i].style.transform = "rotate(180deg)";
