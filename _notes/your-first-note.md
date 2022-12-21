@@ -105,11 +105,11 @@ Lists work as expected:
 If you'd like to quote other people, consider using quote blocks:
 ```
  > [!Info]
- > Lorem ipsum dolor sit amet
- >
+> Lorem ipsum dolor sit amet
+>
  > [!This will not appear as a callout] 
- >
- > because this is not the first line of the block quote 
+>
+> because this is not the first line of the block quote 
 ```
 > [!Info]
 > Lorem ipsum dolor sit amet
@@ -119,9 +119,10 @@ If you'd like to quote other people, consider using quote blocks:
 > because this is not the first line of the block quote 
 
 And of course, images look great:
-{% highlight text %}
+
+```
 ![[notes-media/image.jpg]]
-{% endhighlight %}
+```
 
 ![[notes-media/image.jpg]]
 

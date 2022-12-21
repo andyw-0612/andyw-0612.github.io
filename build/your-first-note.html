@@ -25,7 +25,7 @@
   
 
   
-  <meta property="article:published_time" content="2022-12-20T19:14:05-08:00">
+  <meta property="article:published_time" content="2022-12-21T09:46:40-08:00">
   <meta property="article:author" content="/">
   
 
@@ -66,6 +66,9 @@
     </a>
 </div>
 <div class="side-nav-container">
+    
+    
+    [#&lt;Jekyll::Document _notes/Live preview update.md collection=notes&gt;, #&lt;Jekyll::Document _notes/Start here.md collection=notes&gt;, #&lt;Jekyll::Document _notes/consistency.md collection=notes&gt;, #&lt;Jekyll::Document _notes/your-first-note.md collection=notes&gt;]
     
 
     
@@ -443,11 +446,11 @@
 
 <p>If you’d like to quote other people, consider using quote blocks:</p>
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &gt; [!Info]
- &gt; Lorem ipsum dolor sit amet
- &gt;
+&gt; Lorem ipsum dolor sit amet
+&gt;
  &gt; [!This will not appear as a callout] 
- &gt;
- &gt; because this is not the first line of the block quote 
+&gt;
+&gt; because this is not the first line of the block quote 
 </code></pre></div></div>
 
 <blockquote class="callout">
@@ -459,10 +462,12 @@
   <p>because this is not the first line of the block quote</p>
 </blockquote>
 
-<p>And of course, images look great:
-Liquid error: internal</p>
+<p>And of course, images look great:</p>
 
-<p><img src="notes-media/image.jpg"></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>![[notes-media/image.jpg]]
+</code></pre></div></div>
+
+<p><img src="notes-media/image.jpg" alt="Image Not Found"></p>
 
 <p>You can also <mark>highlight some content</mark> by wrapping it with <code class="language-plaintext highlighter-rouge">==</code>.</p>
 

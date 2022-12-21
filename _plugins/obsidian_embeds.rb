@@ -73,7 +73,7 @@ class ObsidianEmbeds < Jekyll::Generator
     def parse_image_embeds(str)
         # Define the regex pattern to match everything between "![[" and "]]"
         # this is for image embeds        
-        pattern = /!\[\[(.*?.*)\]\]/
+        pattern = /\!\[\[(([a-z\-_0-9\\/\:]+\s*)+\.(jpg|jpeg|png|gif|svg|webp))]]/i
 
         matched_img_list = str.scan(pattern)
 
@@ -85,7 +85,7 @@ class ObsidianEmbeds < Jekyll::Generator
                 matched_img[0].gsub!(/\./, "\\.")
                 str.sub!(
                     /!\[\[(.*#{matched_img[0]}.*)\]\]/i,
-                    "<img src='#{original_img}'>"
+                    "<img src='#{original_img}' alt='Image Not Found'>"
                 )
             end
         end

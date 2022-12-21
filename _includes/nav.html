@@ -7,6 +7,9 @@
     </a>
 </div>
 <div class="side-nav-container">
+    {% assign first_level_notes = site.notes | where_exp: "notes", "notes.has_parent == nil" %}
+    {% assign second_level_notes = site.notes | where_exp: "notes", "notes.has_parent != nil" %}
+    {{ first_level_notes | inspect }}
     {% assign note_items = site.notes | sort: "title" %}
 
     {% for note_item in note_items %}
