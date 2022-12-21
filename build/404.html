@@ -65,6 +65,9 @@
 <div class="side-nav-container">
     
     
+
+
+    
     [#&lt;Jekyll::Document _notes/Live preview update.md collection=notes&gt;, #&lt;Jekyll::Document _notes/Start here.md collection=notes&gt;, #&lt;Jekyll::Document _notes/consistency.md collection=notes&gt;, #&lt;Jekyll::Document _notes/your-first-note.md collection=notes&gt;]
     
 
@@ -248,7 +251,7 @@
         for (let i = 0; i < collapsible.length; i++){
             // when the button is clicked
             collapsible[i].onclick = function() {
-                console.log(this.parentElement.nextElementSibling);
+                console.log(this.nextElementSibling);
 
                 let childWrapper = this.parentElement.nextElementSibling;
                 if (childWrapper.style.display == "none" || !childWrapper.style.display){

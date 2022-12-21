@@ -9,6 +9,9 @@
 <div class="side-nav-container">
     {% assign first_level_notes = site.notes | where_exp: "notes", "notes.has_parent == nil" %}
     {% assign second_level_notes = site.notes | where_exp: "notes", "notes.has_parent != nil" %}
+
+
+    
     {{ first_level_notes | inspect }}
     {% assign note_items = site.notes | sort: "title" %}
 
@@ -199,7 +202,7 @@
         for (let i = 0; i < collapsible.length; i++){
             // when the button is clicked
             collapsible[i].onclick = function() {
-                console.log(this.parentElement.nextElementSibling);
+                console.log(this.nextElementSibling);
 
                 let childWrapper = this.parentElement.nextElementSibling;
                 if (childWrapper.style.display == "none" || !childWrapper.style.display){
