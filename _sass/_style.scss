@@ -1,6 +1,6 @@
 $color-primary: hsl(0, 0%, 15%); // color used on anchor links on hover
-$color-header: rgb(48, 48, 48); // h1 - h6 color, darker than the text color
-$color-text: #3f3f3f; // the text color of the main content
+$color-header: rgb(42, 42, 42); // h1 - h6 color, darker than the text color
+$color-text: rgb(58, 58, 58); // the text color of the main content
 $color-subtext: hsl(0, 0%, 30%);
 $color-border: #8b88e6; // purple border on the bottom of anchor tags
 $color-hr: #d9d9d9;
@@ -8,7 +8,7 @@ $color-box-background: mix($color-primary, white, 4%); // color of backlink box
 $border-radius: 5px; // border radius of images and the backlink box
 $font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial,
   sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
-$color-toc: #64606d; // the text color of the auto generated toc by Kramdown
+$color-toc: rgb(76, 72, 85); // the text color of the auto generated toc by Kramdown
 
 /* Document
    ========================================================================== */
@@ -303,7 +303,7 @@ audio{
 
 #markdown-toc, #parent-page-toc, .toc-heading{
   margin-top: 0.5em;
-  color: $color-toc;
+  // color: $color-toc;
 }
 
 #markdown-toc li a, #parent-page-toc li a{
