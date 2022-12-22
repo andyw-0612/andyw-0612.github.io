@@ -1,213 +1,45 @@
-$color-primary: hsl(0, 0%, 0%);
-$color-header: rgb(48, 48, 48);
-$color-text: #3f3f3f;
+$color-primary: hsl(0, 0%, 15%); // color used on anchor links on hover
+$color-header: rgb(48, 48, 48); // h1 - h6 color, darker than the text color
+$color-text: #3f3f3f; // the text color of the main content
 $color-subtext: hsl(0, 0%, 30%);
-$color-border: #8b88e6;
+$color-border: #8b88e6; // purple border on the bottom of anchor tags
 $color-hr: #d9d9d9;
-$color-box-background: mix($color-primary, white, 4%);
-$border-radius: 5px;
+$color-box-background: mix($color-primary, white, 4%); // color of backlink box
+$border-radius: 5px; // border radius of images and the backlink box
 $font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial,
   sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
-$min-side-nav-width: 275px;
-$color-toc: #64606d;
+$color-toc: #64606d; // the text color of the auto generated toc by Kramdown
+
+/* Document
+   ========================================================================== */
+
+/**
+ * 1. Overflow is set to hidden on body, it will be toggeled on and off for individual elements 
+ */
 
 body {
   box-sizing: content-box;
   font-family: $font-family;
-  // margin: 0 auto;
   line-height: 1.7;
-  // padding: 4vh 6vw;
   color: $color-text;
   font-size: 0.95rem;
   height: 100vh;
   overflow: hidden;
-  // max-width: 63em;
   overflow-wrap: break-word;
 
+  // smaller font-size on mobile screens
   @media (min-width: 810px) {
     font-size: 1.08rem;
   }
 }
 
-li::marker{
-  color: rgba(51, 51, 51, 0.75);
-}
 
-.table-wrapper {
-  overflow: auto;
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
+/* Typography
+   ========================================================================== */
 
-table {
-  border-spacing: 0;
-  min-width: 100%;
-}
-
-td,
-th {
-  border-bottom: 1px solid #eaeaea;
-  padding: 0.6rem 0.85rem; 
-  min-width: 100px;}
-
-td:first-child,
-th:first-child {
-  padding-left: 0; 
-}
-
-td:last-child,
-th:last-child {
-  padding-right: 0; 
-
-}
-table thead th, table thead td{
-  border-width: 0 0 2px;
-}
-
-@media (min-width: 40rem) {
-  table {
-    display: table;
-    overflow-x: initial; } 
-  }
-
-
-// outer most container
-.container{
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  column-gap: 1.5em;
-  height: 100vh;
-  padding: 0 2vw 0 0;
-}
-
-// entire side nav container
-.side-nav{
-  display: flex;
-  flex-direction: column;
-  flex: 0 0.3 $min-side-nav-width;
-  background-color: #fafbfd;
-  border-right: 1px solid #eef1f5;
-  padding-bottom: 2em;
-}
-
-// before trick to fill up the background
-.side-nav::before{
-  content: " ";
-  display: block;
-  margin-inline-start: -100%;
-  position: absolute;
-  top: 0;
-  width: 100vw;
-  height: 100%;
-  background-color: #fafbfd;
-
-}
-
-// site heading container 
-.site-header{
-  // 22px is the padding left of the toc titles
-  padding: 30px 22px;
-  font-size: 24px;
-  min-height: 90px;
-  display: block;
-}
-
-
-.wrapper{
-  flex: 0 1 910px;
-  overflow-y: scroll;
-  padding: 30px 1rem 2vh 1rem;
-}
-
-.wrapper::-webkit-scrollbar{
-  display: none;
-}
-body::-webkit-scrollbar{
-  display: none;
-}
-.wrapper, body{
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-  overflow: -moz-scrollbars-none;
-}
-
-@media (max-width: 64em) {
-  // body{
-  //   display: none;
-  // }
-}
-time {
-  display: block;
-  color: $color-toc;
-  font-size: 22px;
-  margin: 0.2em 0 1.25em;
-}
-
-footer, img {
-  margin: 2em 0;
-  font-size: 0.8em;
-  color: mix($color-text, white, 80%);
-  padding-top: 1em;
-}
-
-img {
-  max-width: 100%;
-  display: block;
-  margin: 0 auto;
-  padding: 0;
-  max-height: 75vh;
-  border-radius: $border-radius;
-}
-.callout{
-  border-left: 4px solid rgb(68, 138, 255);
-  border-radius: 5px;
-  background-color: rgba(68, 138, 255, 0.15);
-  margin: 2em 0;
-  color: #5c5962;
-  padding: 0.8em 1.25em;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), 0 3px 10px rgba(0, 0, 0, 0.08);
-}
-.callout-title{
-  font-weight: bold;
-  color: #183385;
-  padding-bottom: 0.2em;
-}
-blockquote{
-  margin-left: 0;
-  margin-right: 0;
-  padding: 0.75rem 1.25rem;
-  border-left: 3px solid #eeebee;
-
-  p{
-    margin: 0;
-  }
-}
-
-hr {
-  width: 100%;
-  border: 0;
-  height: 1px;
-  margin: 1.7em 0;
-  background: $color-hr;
-}
-
-.toc-heading{
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  margin-top: 0.3em;
-  text-transform: uppercase;
-}
-
-#markdown-toc, .toc-heading{
-  margin-top: 0.5em;
-  color: $color-toc;
-}
-
-#markdown-toc li a{
-  color: $color-toc;
-}
+/**
+ * 1. The title of every note, which is a h1, have extra margin on top and bottom 
+ */
 
 h1,
 h2,
@@ -238,10 +70,146 @@ h3{
   font-weight: 500;
 }
 
-// padding bottom 0px so the border shows up on a inline code <a>
-a code{
-  padding-bottom: 0;
+
+/* Table
+   ========================================================================== */
+
+table thead th, table thead td{
+  border-width: 0 0 2px;
 }
+
+table {
+  border-spacing: 0;
+  min-width: 100%;
+}
+
+td,
+th {
+  border-bottom: 1px solid #eaeaea;
+  padding: 0.6rem 0.85rem; 
+  min-width: 100px;}
+
+// first column and last column of table should align with their resepctive edges 
+td:first-child,
+th:first-child {
+  padding-left: 0; 
+}
+
+td:last-child,
+th:last-child {
+  padding-right: 0; 
+
+}
+
+.table-wrapper {
+  overflow: auto;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+@media (min-width: 40rem) {
+  table {
+    display: table;
+    overflow-x: initial; } 
+}
+
+/* Lists
+   ========================================================================== */
+
+li::marker{
+  color: rgba(51, 51, 51, 0.75);
+}
+
+li{
+  margin: 0.25em 0;
+  padding-left: 0.25em;
+}
+
+/* Blockquote
+   ========================================================================== */
+
+blockquote{
+  margin-left: 0;
+  margin-right: 0;
+  padding: 0.75rem 1.25rem;
+  border-left: 3px solid #eeebee;
+
+  p{
+    margin: 0;
+  }
+}
+
+/* Images
+   ========================================================================== */
+  
+/**
+ * 1. The color is set for the 'alt' text of image, it's set to the color of the footer
+ */
+
+img {
+  max-width: 100%;
+  display: block;
+  margin: 0 auto;
+  padding: 0;
+  max-height: 75vh;
+  border-radius: $border-radius;
+  color: mix($color-text, white, 80%);
+}
+
+/* Time
+   ========================================================================== */
+
+/**
+ * 1. This is the element that displays a gray colored 'description' for each note
+ */
+
+ time {
+  display: block;
+  color: $color-toc;
+  font-size: 22px;
+  margin: 0.2em 0 1.25em;
+}
+
+/* Footnotes 
+   ========================================================================== */
+
+/**
+ * 1. Footnotes are displayed through li elements, they should have 0 margin and padding
+ */
+
+.footnotes > li {
+  margin: 0;
+}
+
+/* Footer
+   ========================================================================== */
+
+footer{
+  margin: 2em 0;
+  font-size: 0.8em;
+  color: mix($color-text, white, 80%);
+  padding-top: 1em;
+}
+
+/* Horizontal Seperator 
+   ========================================================================== */
+
+hr {
+  width: 100%;
+  border: 0;
+  height: 1px;
+  margin: 1.7em 0;
+  background: $color-hr;
+}
+
+/* Anchor Tags 
+   ========================================================================== */
+
+/**
+ * 1. For anchor tags that are internal links, footnotes, and side navigation links,
+ * remove the little arrow on the top right
+ * i.e only external links have the little arrow on the top right
+ */
 
 a {
   transition: background 300ms;
@@ -267,27 +235,21 @@ a {
     content: "";
   }
 }
-// everything except the side nav bar
-:not(.toc-link, #hamburger-menu):focus {
-  background: #ffe8bc !important;
-  color: black !important;
-}
+
+/* Audio
+   ========================================================================== */
 
 audio{
   max-width: 100%;
 }
 
-.backlink-box {
-  background: $color-box-background;
-  padding: 1em;
-  border-radius: $border-radius;
-}
 
-code {
-  background: #f5f5f5;
-  padding: 0.1em 0.2em;
-  border-radius: 5px;
-}
+/* Invalid Links & Brackets 
+   ========================================================================== */
+
+/**
+ * 1. span tags are used to represent invalid links to notes that does not exist 
+ */
 
 .invalid-link {
   color: #6b6b6b;
@@ -301,46 +263,130 @@ code {
   cursor: help;
 }
 
-li{
-  padding: 0.1em;
+/* Callouts 
+   ========================================================================== */
+
+/**
+ * 1. Styles are adapted from Obsidian Publish and Just the Docs
+ */
+
+.callout{
+  border-left: 4px solid rgb(68, 138, 255);
+  border-radius: 5px;
+  background-color: rgba(68, 138, 255, 0.15);
+  margin: 2em 0;
+  color: #5c5962;
+  padding: 0.8em 1.25em;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), 0 3px 10px rgba(0, 0, 0, 0.08);
 }
 
+.callout-title{
+  font-weight: bold;
+  color: #183385;
+  padding-bottom: 0.2em;
+}
+
+/* Table of Contents Generated by Kramdown 
+   ========================================================================== */
+
+/**
+ * 1. Text color is lighter than the typical text color
+ */
+
+.toc-heading{
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  margin-top: 0.3em;
+  text-transform: uppercase;
+}
+
+#markdown-toc, #parent-page-toc, .toc-heading{
+  margin-top: 0.5em;
+  color: $color-toc;
+}
+
+#markdown-toc li a, #parent-page-toc li a{
+  color: $color-toc;
+}
+
+#markdown-toc li a::after, #parent-page-toc li a::after{
+  content: " ";
+}
+
+/* Document Container and Wrapper
+   ========================================================================== */
+
+/**
+ * 1. The main content (.wrapper) removes the visibility of the scrollbar
+ */
+
+// outer most container
+.container{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  column-gap: 1.5em;
+  height: 100vh;
+  padding: 0 2vw 0 0;
+}
+
+// wrapper for the note content
+// the third value in flex determines the width of the content
+// if the screen width allows
+.wrapper{
+  flex: 0 1 910px;
+  overflow-y: scroll;
+  padding: 30px 1rem 2vh 1rem;
+}
+
+// remove scrollbar 
+.wrapper::-webkit-scrollbar{
+  display: none;
+}
+body::-webkit-scrollbar{
+  display: none;
+}
+.wrapper, body{
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  overflow: -moz-scrollbars-none;
+}
+
+/* Backlink Box
+   ========================================================================== */
+
+.backlink-box {
+  background: $color-box-background;
+  padding: 1em;
+  border-radius: $border-radius;
+}
+
+/* Elements on Focus
+   ========================================================================== */
+
+// everything except the side nav bar
+:not(.toc-link, #hamburger-menu):focus {
+  background: #ffe8bc !important;
+  color: black !important;
+}
+
+/* Media Queries 
+   ========================================================================== */
+
+/**
+ * 1. the outer most container switches from flex to block display, which allows for the navbar to stack on 
+ * top of the content, instead of side by side
+ * 
+ */
+
 @media (max-width: 810px) {
+  // allow the entire content to be scrollable
   body{
     overflow-y: scroll;
   }
   .container{
     display: block;
     padding: 0;
-  }
-  .site-header{
-    padding: 16px 20px 10px 20px;
-    min-height: 35px;
-    font-size: 20px;
-  }
-  // this ensures that when the navbar is closed, the padding bottom of site header is small
-  // but when it's open, there's still a resonable amount of gap in between the two
-  .side-nav-container{
-    margin-top: 6px;
-    display: none;
-  }
-  .toc-title{
-    padding: 12px calc(1.4em + 24px + 5px) 12px 17px !important;
-  }
-  .side-nav{
-    padding-bottom: 0.75em;
-  }
-  .drop-down-img{
-    max-height: calc(1.5em + 24px) !important;
-    max-width: calc(1.5em + 24px) !important;
-    padding: calc(0.79em + 3px) calc(0.81em + 3px) calc(0.79em + 3px) calc(0.81em + 3px) !important;
-  }
-  // href to home
-  #home-link{
-    text-decoration: none;
-    flex: 0 1 auto;
-  }
-  .site-header{
-    display: flex;
   }
 }

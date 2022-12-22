@@ -6,6 +6,7 @@
         <div class="menu-icon"></div>
     </a>
 </div>
+
 <div class="side-nav-container">
     {% assign first_level_notes = site.notes | where_exp: "notes", "notes.has_parent == nil" | sort: "title" %}
     {% assign second_level_notes = site.notes | where_exp: "notes", "notes.has_parent != nil" | sort: "title" %}
@@ -13,12 +14,13 @@
     {% for note in first_level_notes %}
 
         <div class="side-nav-feed">
+            
             {% comment %}
                 if we're on the current page, we assign the current-page class
             {% endcomment %}
 
-            <a href="{{ site.baseurl }}{{note.url}}" class="toc-link">
-                <div class="toc-title {% if page.title == note.title %} current-page {% endif %}">
+            <a href="{{ site.baseurl }}{{note.url}}" class="nav-link">
+                <div class="nav-title {% if page.title == note.title %} current-page {% endif %}">
                     {{ note.title }}
                 </div>
             </a>
@@ -31,11 +33,11 @@
                 is the note that we're looping through, if so, set the drop down image to open
             {% endcomment %}
 
-            {%- if note.has_children -%}
+            {% if note.has_children %}
                 <img src="{{ '/assets/media/drop-down-arrow.png' | relative_url }}" class="drop-down-img"
                 {% if page.has_parent == note.title %} style="transform: rotate(180deg);" 
-                {%- else -%} style="transform: rotate(0);" {% endif %}>
-            {%- endif -%}
+                {%- else -%} style="transform: rotate(0);" {% endif %} alt="drop down arrow">
+            {% endif %}
 
             {% comment %}
                 if the note has child pages, assign its child pages to child_pages and loop through 
@@ -43,7 +45,7 @@
                 their parent page's title (NOT the file name but the frontmatter title)
             {% endcomment %}
 
-            {%- if note.has_children -%}
+            {% if note.has_children %}
             
                 <div class="child-wrapper" {% if page.has_parent == note.title %} 
                 style="display: block;" {% else %} style="display: none" {% endif %}>
@@ -53,8 +55,8 @@
                 {% for child_note in child_pages %}
                     <div class="side-nav-feed">
                 
-                    <a href="{{ site.baseurl }}{{child_note.url}}" class="toc-link">
-                        <div class="toc-title child-link {% if page.title == child_note.title %} current-page {% endif %}">
+                    <a href="{{ site.baseurl }}{{child_note.url}}" class="nav-link">
+                        <div class="nav-title child-link {% if page.title == child_note.title %} current-page {% endif %}">
                             {{ child_note.title }}
                         </div>
                     </a>
@@ -63,8 +65,12 @@
                 {% endfor %}
                 
                 </div>
-            {%- endif -%}
+            {% endif %}
 
+            {% comment %}
+                if the current page that we're on has children, then assign toc_list to be a list of that page's
+                children
+            {% endcomment %}
 
         </div>
 
@@ -85,93 +91,6 @@
     <footer style="justify-content: center; display: flex;">JS isn't enabled, goodluck with that.</footer>
 </noscript>
 
-<style>
-    #hamburger-menu{
-        display: none;
-    }
-    @media (max-width: 810px) {
-        .menu-icon{
-            background-color: rgb(51, 51, 51);
-            height: 0.5px;
-            width: 22px;
-            border-radius: 20px;
-            border: 1px solid rgb(51, 51, 51);
-        }
-        .center-menu-icon{
-            margin: 5px 0;
-        }
-        #hamburger-menu::after{
-            display: none;
-        }
-        #hamburger-menu{
-            cursor: pointer;
-            border: none;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            flex: 1 1 auto;
-            justify-content: center;
-            padding-top: 6px;
-        }
-    }
-    .toc-link::after{
-        content: none;
-        top: 0;
-    }
-    .toc-link{
-        border: none;
-        padding: 0;
-        flex: 1 1 auto;
-    }
-    .toc-link:hover, .drop-down-img:hover{
-        background-color:#f1f2f5;
-    }
-    @media (min-width: 811px){
-        /* avoid closing the navbar in mobile then switching the window size and the navbar is hidden */
-        .side-nav-container{
-            display: block !important;
-        }
-    }
-    .side-nav-container{
-        line-height: 1;
-        overflow-y: scroll;
-    }
-    .side-nav-feed{
-        font-size: 14.5px;
-        line-height: 1.5;
-        position: relative;
-    }
-    .toc-title{
-        padding: 8px calc(1.5em + 16px + 5px) 8px 22px;
-        color: #8b88e6;
-        flex: 1 1 auto;
-    }
-    .toc-title.child-link{
-        color: #56535d;
-    }
-    .child-wrapper .toc-title{
-        padding-left: 40px;
-        padding-right: 30px;
-    }
-    .current-page{
-        font-weight: 600;
-        background-color:#f1f2f5;
-    }
-    .drop-down-img{
-        /* 1.5em to align with the height of the side-nav-feed as its line height is 1.5 
-        then add 16px to account for both top and bottom padding */
-        max-height: calc(1.5em + 16px);
-        max-width: calc(1.5em + 16px);
-        padding: 0.79em 0.81em 0.79em 0.81em;
-        box-sizing: border-box;
-        cursor: pointer;
-        position: absolute;
-        right: 0;
-        top: 0;
-        /* this is needed so the image does not take on footer's font size */
-        font-size: inherit;
-    }
-</style>
 <script type="text/javascript">
 
     const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)

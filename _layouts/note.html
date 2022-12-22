@@ -17,7 +17,29 @@ layout: default
     {% endif %}
 
     <content>
+
+      {% comment %}
+        if the note has child pages, display a table of content similar to the Kramdown's auto generated one
+      {% endcomment %}
+
+      {% if page.has_children == true and page.has_toc != false %}
+
+        {% assign toc_list = site.notes | where_exp: "notes", "notes.has_parent == page.title" %}
+
+        <hr>
+        <h2 class="no_toc toc-heading" id="parent-table-of-contents">Table of Contents</h2>
+        <ul id="parent-page-toc">
+          {% for child in toc_list %}
+            <li>
+              <a href="{{ child.url | relative_url }}">{{ child.title }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+
+      {% endif %}
+
       {{ content }}
+
       <p>This line appears after every note.</p>
     </content>
 

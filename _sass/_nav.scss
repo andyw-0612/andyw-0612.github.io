@@ -1,0 +1,193 @@
+$min-side-nav-width: 275px; // the minimum width of the side nav bar on large displays
+$side-nav-background: #fafbfd;
+$nav-link-height: 1.5; // line height for everything inside side navigation, also serves as the height for each side nav 'bar'
+
+/* Side Navigation Container 
+   ========================================================================== */
+
+// entire side nav container
+.side-nav{
+    display: flex;
+    flex-direction: column;
+    flex: 0 0.3 $min-side-nav-width;
+    background-color: $side-nav-background;
+    border-right: 1px solid #eef1f5;
+    padding-bottom: 2em;
+}
+  
+// before trick to fill up the background
+.side-nav::before{
+    content: " ";
+    display: block;
+    margin-inline-start: -100%;
+    position: absolute;
+    top: 0;
+    width: 100vw;
+    height: 100%;
+    background-color: $side-nav-background;
+}
+
+// site heading container 
+.site-header{
+    // 22px is the padding left of the nav titles
+    padding: 30px 22px;
+    font-size: 24px;
+    min-height: 90px;
+    display: block;
+}
+
+// inner container that actually contains all the entries of nav-links, as opposed
+// to .side-nav which also contains the site-header
+.side-nav-container{
+    line-height: 1;
+    overflow-y: scroll;
+}
+.side-nav-feed{
+    font-size: 14.5px;
+    line-height: 1.5;
+    position: relative;
+}
+  
+/* Side Navigation Titles and Links
+   ========================================================================== */
+
+/**
+ * 1. The height for each individual horizontal 'bars' is just the line height of the text
+ * in em as line height * font-size = actual text height
+ */
+ 
+.nav-link::after{
+    // disables the default arrow on top right corner
+    content: none;
+    top: 0;
+}
+
+.nav-link{
+    border: none;
+    padding: 0;
+    flex: 1 1 auto;
+}
+
+.nav-link:hover, .drop-down-img:hover{
+    background-color:#ebecef;
+}
+
+// 1.5em + 16px is the width of the dropdown image on the right, 5px is extra padding
+// for visual purposes
+.nav-title{
+    padding: 8px calc(#{$nav-link-height * 1em} + 16px + 5px) 8px 22px;
+    color: #8b88e6;
+    flex: 1 1 auto;
+}
+
+.nav-title.child-link{
+    color: #56535d;
+}
+
+// extra left padding to have an indented effect
+.child-wrapper .nav-title{
+    padding-left: 40px;
+    padding-right: 30px;
+}
+
+/* Mobile Display 
+   ========================================================================== */
+
+/**
+ * 1. The hamburger menu item is initially not displayed until the screen width gets small enough
+ */
+
+#hamburger-menu{
+    display: none;
+}
+@media (max-width: 810px) {
+    // the top and bottom bars of the hamburger menu
+    .menu-icon{
+        background-color: rgb(51, 51, 51);
+        height: 0.5px;
+        width: 22px;
+        border-radius: 20px;
+        border: 1px solid rgb(51, 51, 51);
+    }
+    // the center bar of the hamburger menu
+    .center-menu-icon{
+        margin: 5px 0;
+    }
+    // remove the little arrow on anchor tags
+    #hamburger-menu::after{
+        display: none;
+    }
+    #hamburger-menu{
+        cursor: pointer;
+        border: none;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        flex: 1 1 auto;
+        justify-content: center;
+        padding-top: 6px;
+    }
+
+    // padding to position the site header (home button) on the top left corner
+    .site-header{
+        padding: 16px 20px 10px 20px;
+        min-height: 35px;
+        font-size: 20px;
+    }
+    // this ensures that when the navbar is closed, the padding bottom of site header is small
+    // but when it's open, there's still a resonable amount of gap in between the two
+    .side-nav-container{
+        margin-top: 6px;
+        display: none;
+    }
+    // thicker navigation bars (24px as opposed to 16px)
+    .nav-title{
+        padding: 12px calc(1.5em + 24px + 5px) 12px 17px;
+    }
+
+    .side-nav{
+        padding-bottom: 0.75em;
+    }
+
+    .drop-down-img{
+        max-height: calc(1.5em + 24px);
+        max-width: calc(1.5em + 24px);
+        padding: calc(0.79em + 3px) calc(0.81em + 3px) calc(0.79em + 3px) calc(0.81em + 3px);
+    }
+
+    .site-header{
+        display: flex;
+    }
+    // href to home
+    #home-link{
+        flex: 0 1 auto;
+    }
+}
+
+@media (min-width: 811px){
+    // avoid closing the navbar in mobile then switching the window size and the navbar is hidden 
+    // !important is needed since javascript directly modifies the style on the element
+    .side-nav-container{
+        display: block !important;
+    }
+}
+
+/* Misc 
+   ========================================================================== */
+
+.current-page{
+    font-weight: 600;
+    background-image: linear-gradient(-90deg, #ebecef 0%, rgba(235, 236, 239, 0.6) 90%, $side-nav-background 100%);
+}
+.drop-down-img{
+    /* 1.5em to align with the height of the side-nav-feed as its line height is 1.5 
+    then add 16px to account for both top and bottom padding */
+    max-height: calc(1.5em + 16px);
+    max-width: calc(1.5em + 16px);
+    padding: 0.79em 0.81em 0.79em 0.81em;
+    box-sizing: border-box;
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
