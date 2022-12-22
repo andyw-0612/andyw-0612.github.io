@@ -1,7 +1,10 @@
 ---
-desc: "this is a note about moving your bodies"
 has_parent: "First Note"
 ---
+<header>
+this is a note about moving your bodies
+</header>
+
 ## Heading Number One 
 
 Move your body every day. Benefits include:

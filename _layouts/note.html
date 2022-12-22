@@ -10,17 +10,13 @@ layout: default
   </div>
 
   <div id="notes-entry-container">
-    {% if page.type != 'pages' and page.desc and page.desc != "" %}
-    <time datetime="{{ page.last_modified_at | date_to_xmlschema }}">
-    {{ page.desc }}
-    </time>
-    {% endif %}
-
     <content>
 
       {% comment %}
         if the note has child pages, display a table of content similar to the Kramdown's auto generated one
       {% endcomment %}
+
+      {{ content }}
 
       {% if page.has_children == true and page.has_toc != false %}
 
@@ -37,8 +33,6 @@ layout: default
         </ul>
 
       {% endif %}
-
-      {{ content }}
 
       <p>This line appears after every note.</p>
     </content>

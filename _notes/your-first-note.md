@@ -3,6 +3,10 @@ title: First Note
 desc: "This is your first note, take note of it!"
 has_children: true
 ---
+<header>
+This is your first note, take note of it!
+</header>
+
 <hr>
 ## Table of Contents
 {:.no_toc .toc-heading}

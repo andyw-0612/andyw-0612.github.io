@@ -156,14 +156,14 @@ img {
   color: mix($color-text, white, 80%);
 }
 
-/* Time
+/* Header
    ========================================================================== */
 
 /**
  * 1. This is the element that displays a gray colored 'description' for each note
  */
 
- time {
+header {
   display: block;
   color: $color-toc;
   font-size: 22px;
