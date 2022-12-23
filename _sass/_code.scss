@@ -1,7 +1,8 @@
 code {
-  background: #f5f5f5;
+  background: rgb(244, 245, 249);
   padding: 0.1em 0.2em;
   border-radius: 5px;
+  border: 1px solid #ebeeee;
 }
 
 // padding bottom 0px so the border shows up on a inline code <a>
@@ -9,8 +10,8 @@ a code{
   padding-bottom: 0;
 }
 
-.highlight  {
-  background: #f8f8f8;
+.highlight {
+  background: rgb(244, 245, 249);
   padding: 1px 1em;
   border-radius: 3px;
   font-size: 1em;
@@ -19,6 +20,7 @@ a code{
   margin: 1em -0.35em;
   code{
     padding: 0;
+    border: none;
   }
 }
 

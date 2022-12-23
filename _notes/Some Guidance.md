@@ -1,8 +1,9 @@
 ---
+title: Some Guidance
 ---
-<head>
+<header>
 Information here and there about the notes and the website
-</head>
+</header>
 
 <hr>
 ## Table of Contents
@@ -15,7 +16,9 @@ Information here and there about the notes and the website
 
 This site is created using the static site generater [Jekyll](https://jekyllrb.com), modified from the [Jekyll Digital Garden Theme](https://github.com/maximevaillancourt/digital-garden-jekyll-template), inspired by the [Obsidian Help Page](https://help.obsidian.md) and the Jekyll [Just the Docs](https://github.com/just-the-docs/just-the-docs) theme. 
 
-![[homepage-sc.png]]
+<br>
+<img src="notes-media/homepage-sc.png" style="box-shadow:0 1px 2px rgba(0, 0, 0, 0.12), 0 3px 10px rgba(0, 0, 0, 0.08)" width="684.5px" height="492.5px" alt="Image Not Found">
+<br>
 
 This will be a place where I put down my random thoughts and notes on the online courses I stroll through from time to time. This site is hosted through Github Pages and Github Actions. Due to Github not being compatible with Jekyll sites that have custom plugins, the site is pushed onto the `master` branch on Github but built through a [workflow](https://github.com/andyw-0612/andyw-0612.github.io/blob/master/.github/workflows/main.yml) to the `gh-pages` branch as static `html`, `css`, and `javascript` files, then the Github pages is built from that branch as opposed to the usual `master` branch. 
 
@@ -35,4 +38,8 @@ bundle exec jekyll serve
 
 ## File Structure
 
-* `/_layouts` : This folder consists of the website layout for different types of pages as `html` files. 
+* `/_layouts` : This folder consists of the website layout for different types of pages as `html` files.
+	* `default.html` : Layout for the homepage.
+	* `note.html` : Layout for notes.
+	* `page.html` : Layout for the about page (not sure though).
+* `/_includes` : This folder contains the files mentioned in every `{% include file.html %}` liquid tag. 
