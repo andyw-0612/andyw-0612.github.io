@@ -90,6 +90,26 @@ $nav-link-height: 1.5; // line height for everything inside side navigation, als
     padding-right: 30px;
 }
 
+/* Misc 
+   ========================================================================== */
+
+.current-page{
+    font-weight: 600;
+    background-image: linear-gradient(-90deg, #ebecef 0%, rgba(235, 236, 239, 0.6) 90%, $side-nav-background 100%);
+}
+.drop-down-img{
+    /* 1.5em to align with the height of the side-nav-feed as its line height is 1.5 
+    then add 16px to account for both top and bottom padding */
+    max-height: calc(1.5em + 16px);
+    max-width: calc(1.5em + 16px);
+    padding: 0.79em 0.81em 0.79em 0.81em;
+    box-sizing: border-box;
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
 /* Mobile Display 
    ========================================================================== */
 
@@ -97,7 +117,7 @@ $nav-link-height: 1.5; // line height for everything inside side navigation, als
  * 1. The hamburger menu item is initially not displayed until the screen width gets small enough
  */
 
-#hamburger-menu{
+ #hamburger-menu{
     display: none;
 }
 @media (max-width: 810px) {
@@ -170,24 +190,4 @@ $nav-link-height: 1.5; // line height for everything inside side navigation, als
     .side-nav-container{
         display: block !important;
     }
-}
-
-/* Misc 
-   ========================================================================== */
-
-.current-page{
-    font-weight: 600;
-    background-image: linear-gradient(-90deg, #ebecef 0%, rgba(235, 236, 239, 0.6) 90%, $side-nav-background 100%);
-}
-.drop-down-img{
-    /* 1.5em to align with the height of the side-nav-feed as its line height is 1.5 
-    then add 16px to account for both top and bottom padding */
-    max-height: calc(1.5em + 16px);
-    max-width: calc(1.5em + 16px);
-    padding: 0.79em 0.81em 0.79em 0.81em;
-    box-sizing: border-box;
-    cursor: pointer;
-    position: absolute;
-    right: 0;
-    top: 0;
 }
