@@ -27,6 +27,12 @@ body {
   overflow: hidden;
   overflow-wrap: break-word;
 
+  // needed so that when clicked on heading anchor links, the page does not scroll to leave 
+  // blank space below body
+  position: fixed;
+  right: 0;
+  left: 0;
+
   // smaller font-size on mobile screens
   @media (min-width: 810px) {
     font-size: 1.08rem;
@@ -414,6 +420,7 @@ body::-webkit-scrollbar{
   // allow the entire content to be scrollable
   body{
     overflow-y: scroll;
+    position: relative;
   }
   .container{
     display: block;
