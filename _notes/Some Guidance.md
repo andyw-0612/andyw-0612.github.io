@@ -135,6 +135,16 @@ Global site settings are configured in `_config.yml`.
 >
 > The custom Jekyll plugin I wrote for callouts needs some tweaking and debugging
 
+## Custom Plugins
+
+Information and notes about the custom plugins I wrote for this site in Ruby.
+
+### Order of Plugins
+
+Both `_plugins/obsidian_embeds.rb` and `_plugins/bidirectional_link_generator.rb` has a priority flag set to low and lowest, respectively. 
+
+`obsidian_embeds` must run after all plugins except `bidirectional_link_generator` since `obsidian_embeds` convert the markdown content to HTML code. The `bidirectional_link_generator` plugin parses HTML content, while all other plugins directly parse the markdown content.
+
 ## Current Workflow
 
 Obsidian is used for note-taking with the `_notes` directory as the Obsidian vault. Images and media for notes are stored in `_notes/notes-media`. Visual Studio Code is used to add, commit, and push changes to the remote repository on GitHub. GitHub will automatically deploy the updated changes through GitHub Actions to GitHub Pages at [andyw-0612.github.io](https://andyw-0612.github.io). 

@@ -3,7 +3,7 @@ require "liquid"
 
 class ObsidianEmbeds < Jekyll::Generator
     # the plugin will be executed last since it converts markdown to html
-    priority :lowest
+    priority :low
 
     # function to actually generate the site
     def generate(site)

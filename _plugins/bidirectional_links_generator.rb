@@ -2,6 +2,8 @@
 # the regex also matches everything that does NOT start with '![[' to distinguish
 # between image embeds and note embeds
 class BidirectionalLinksGenerator < Jekyll::Generator
+  priority :lowest
+
   def generate(site)
     graph_nodes = []
     graph_edges = []
@@ -15,6 +17,7 @@ class BidirectionalLinksGenerator < Jekyll::Generator
 
     # Identify note backlinks and add them to each note
     all_notes.each do |current_note|
+      # puts current_note.content
       # Nodes: Jekyll
       notes_linking_to_current_note = all_notes.filter do |e|
         e.content.include?(current_note.url)
