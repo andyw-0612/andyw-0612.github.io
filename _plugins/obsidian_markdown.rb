@@ -17,15 +17,22 @@ class ObsidianMarkdown < Jekyll::Generator
             current_note.content.gsub!(/^>(.*?)\n(?!>)/m) do |matched_text|
                 # Check if the first line starts with ">[!" and "]"
                 if matched_text =~ /^>\s*\[!(.*?)\]\s*$/
+                    
+                    if $1.downcase == "warning"
+                        color = "warning-callout"
+                    else
+                        color = "info-callout"
+                    end
+
                     # Replace the first line with the text between "[!" and "]" wrapped in div tags
-                    matched_text.sub!(/^>\s*\[!(.*?)\]\s*\n/, "> <div class='callout-title'> <div class='callout-icon'>
+                    matched_text.sub!(/^>\s*\[!(.*?)\]\s*\n/, "> <div class='callout-title #{color}-title'> <div class='callout-icon'>
                     <svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 
                     0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' 
                     stroke-linejoin='round' class='svg-icon lucide-info'><circle cx='12' cy='12' r='10'>
                     </circle><line x1='12' y1='16' x2='12' y2='12'></line><line x1='12' y1='8' x2='12.01' 
                     y2='8'></line></svg></div>#{$1}</div> \n")
                     # Add "{: .callout}" to the end of the matched text
-                    matched_text << ("{: .callout}")
+                    matched_text << ("{: .callout .#{color}}")
                 
                     # Add a new line at the beginning and end of the matched text
                     matched_text.prepend("\n")
