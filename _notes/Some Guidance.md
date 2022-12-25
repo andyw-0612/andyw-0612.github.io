@@ -20,9 +20,9 @@ This site is created using the static site generator [Jekyll](https://jekyllrb.c
 <img src="notes-media/homepage-sc.png" style="box-shadow:0 1px 2px rgba(0, 0, 0, 0.12), 0 3px 10px rgba(0, 0, 0, 0.08)" alt="Image Not Found">
 <br>
 
-This will be a place where I put down my random thoughts and notes on the online courses I stroll through from time to time. This site is hosted through Github Pages and Github Actions. Due to Github not being compatible with Jekyll sites that have custom plugins, the site is pushed onto the `master` branch on Github but built through a [workflow](https://github.com/andyw-0612/andyw-0612.github.io/blob/master/.github/workflows/main.yml) to the `gh-pages` branch as static `html`, `css`, and `javascript` files, then the Github pages is built from that branch as opposed to the usual `master` branch. 
+This will be where I put down my random thoughts and notes on the online courses I stroll through from time to time. This site is hosted through GitHub Pages and GitHub Actions. Due to Github not being compatible with Jekyll sites that have custom plugins, the site is pushed onto the `master` branch on Github but built through a [workflow](https://github.com/andyw-0612/andyw-0612.github.io/blob/master/.github/workflows/main.yml) to the `gh-pages` branch as static `html`, `css`, and `javascript` files. The GitHub pages are built from that branch as opposed to the usual `master` branch. 
 
-A lot of customization went into building the website and I'll try my best to sort through and document everything for one day if my future self wants to come back.
+A lot of customization went into building the website, and I'll try my best to sort through and document everything for one day if my future self wants to come back.
 
 ### Running the Site Locally
 
