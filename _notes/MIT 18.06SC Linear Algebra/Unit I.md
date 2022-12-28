@@ -18,7 +18,7 @@ Unit 1 of [[MIT 18.06SC Linear Algebra]]
 
 ## The Geometry of Linear Equations
 
-The lecture Overview and Resources can be found [here](https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/ax-b-and-the-four-subspaces/the-geometry-of-linear-equations/). The lecture summary can be found [here](https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/resources/mit18_06scf11_ses1-1sum/).
+The lecture overview and resources can be found [here](https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/ax-b-and-the-four-subspaces/the-geometry-of-linear-equations/). The lecture summary can be found [here](https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/resources/mit18_06scf11_ses1-1sum/).
 
 ### Objectives
 
@@ -84,7 +84,7 @@ Thinking from the row perspective, you would take the first row of the first mat
 
 ## An Overview of Key Ideas
 
-The lecture Overview and Resources can be found [here](https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/ax-b-and-the-four-subspaces/an-overview-of-key-ideas/). The lecture summary can be found [here](https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/resources/mit18_06scf11_ses1-13sum/).
+The lecture overview and resources can be found [here](https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/ax-b-and-the-four-subspaces/an-overview-of-key-ideas/). The lecture summary can be found [here](https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/resources/mit18_06scf11_ses1-13sum/).
 
 ### Objectives
 
@@ -151,6 +151,58 @@ Understanding the Inverse Geometrically
 <hr>
 
 ## Elimination with Matrices
+
+The lecture overview and resources can be found [here](https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/ax-b-and-the-four-subspaces/elimination-with-matrices/). The lecture summary can be found [here](https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/resources/mit18_06scf11_ses1-2sum/).
+
+### Objectives
+
+- Elimination with Matrices (and cases when it fails)
+- Back Substitution 
+- Matrix Multiplication
+
+### Lecture
+
+Consider the system of equations:
+
+$$
+\begin{align}
+x+2y+z=&2 \\
+3x+8y+z=&12 \\
+0x+4y+z=&2
+\end{align}
+$$
+
+where 
+
+$$
+A=\begin{bmatrix} 1 & 2 & 1\\ 3&8&1\\ 0&4&1 \end{bmatrix} 
+\space \space
+x=\begin{bmatrix}x\\y\\z\end{bmatrix}
+\space \space
+b=\begin{bmatrix}2\\12\\2\end{bmatrix}
+$$
+
+Let the number in the top left corner be the "pivot". We can multiply the first row by 3 and ==subtract== it from the second row to obtain
+
+$$
+A=\begin{bmatrix} 1&2&1\\ 0&2&-2\\ 0&4&1 \end{bmatrix} 
+$$
+
+Notice that the "pivot" row does not change. We "eliminated" the element in the second row, first column, element (2, 1). We then eliminate (3, 1), which is already 0. 
+
+We then set the (2, 2) element as the pivot and attempt to eliminate the (3, 2) element, which results in
+
+$$
+A=\begin{bmatrix} 1&2&1\\ 0&2&-2\\ 0&0&5 \end{bmatrix} 
+$$
+
+>[!Warning]
+>Zero cannot be the "pivot" element!
+>
+>If possible, swap rows to allow a nonzero "pivot".
+
+If a zero happens to be a "pivot" element and there's no rows to swap with, we encounter failure. This also indicates that the matrix is non-invertible. 
+
 
 ## Multiplication and Inverse Matrices
 
