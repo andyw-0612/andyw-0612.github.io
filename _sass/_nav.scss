@@ -36,11 +36,19 @@ $nav-link-height: 1.5; // line height for everything inside side navigation, als
     display: block;
 }
 
+.side-nav-container::-webkit-scrollbar {
+    display: none;
+}
+
 // inner container that actually contains all the entries of nav-links, as opposed
 // to .side-nav which also contains the site-header
 .side-nav-container{
     line-height: 1;
     overflow-y: scroll;
+   
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    overflow: -moz-scrollbars-none;
 }
 .side-nav-feed{
     font-size: 14.5px;
