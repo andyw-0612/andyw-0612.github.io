@@ -413,6 +413,18 @@ body::-webkit-scrollbar{
   color: black !important;
 }
 
+/* Latex Blocks
+   ========================================================================== */
+
+/**
+ * 1. If the math content exceeds the screen width, we can scroll the box containing the math,
+ * not the entire page
+ */
+
+.kdmath{
+  overflow: scroll;
+  max-width: 100vw;
+}
 /* Media Queries 
    ========================================================================== */
 

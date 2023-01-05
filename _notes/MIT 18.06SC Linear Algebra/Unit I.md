@@ -182,10 +182,12 @@ x=\begin{bmatrix}x\\y\\z\end{bmatrix}
 b=\begin{bmatrix}2\\12\\2\end{bmatrix}
 $$
 
-Let the number in the top left corner be the "pivot". We can multiply the first row by 3 and ==subtract== it from the second row to obtain
+#### Elimination 
+
+Arrange the system into a matrix by concatenating $A$ and $b$. Let the number in the top left corner be the "pivot". We can multiply the first row by 3 and ==subtract== it from the second row to obtain
 
 $$
-A=\begin{bmatrix} 1&2&1\\ 0&2&-2\\ 0&4&1 \end{bmatrix} 
+A=\begin{bmatrix} 1&2&1&2\\ 0&2&-2&6\\ 0&4&1&2 \end{bmatrix} 
 $$
 
 Notice that the "pivot" row does not change. We "eliminated" the element in the second row, first column, element (2, 1). We then eliminate (3, 1), which is already 0. 
@@ -193,15 +195,53 @@ Notice that the "pivot" row does not change. We "eliminated" the element in the 
 We then set the (2, 2) element as the pivot and attempt to eliminate the (3, 2) element, which results in
 
 $$
-A=\begin{bmatrix} 1&2&1\\ 0&2&-2\\ 0&0&5 \end{bmatrix} 
+A=\begin{bmatrix} 1&2&1&2\\ 0&2&-2&6\\ 0&0&5&-10 \end{bmatrix} 
 $$
 
 >[!Warning]
 >Zero cannot be the "pivot" element!
->
 >If possible, swap rows to allow a nonzero "pivot".
 
 If a zero happens to be a "pivot" element and there's no rows to swap with, we encounter failure. This also indicates that the matrix is non-invertible. 
+
+After elimination, the system then becomes
+
+$$
+\begin{align}
+x+2y+z=&2\\
+2y-2z=&6\\
+5z=&-10
+\end{align}
+$$
+
+Using back substitution, the solution to the system can be determined as $z=2, y=1, z=-2$. 
+
+#### Elimination with Matrices
+
+- A matrix times a column is a column, a row times a matrix is a row. 
+
+- Multiplying a row vector by a matrix is a linear combination of the rows in the matrix using the values of the vector. 
+
+An identity matrix does nothing when multiplied by a matrix.
+
+$$
+\begin{bmatrix} 1&0&0\\ 0&1&0\\ 0&0&1 \end{bmatrix}A = \begin{bmatrix} 1*A_{r1}+0*A_{r2}+0*A_{r3}\\ 0*A_{r1}+1*A_{r2}+0*A_{r3}\\ 0*A_{r1}+0*A_{r2}+1*A_{r3} \end{bmatrix}
+$$
+
+Recall
+
+$$
+A=\begin{bmatrix} 1 & 2 & 1\\ 3&8&1\\ 0&4&1 \end{bmatrix} 
+$$
+
+The first step of the elimination can be represented by the following matrix operation
+
+$$
+\begin{bmatrix} 1&0&0\\ -3&1&0\\ 0&0&1 \end{bmatrix}\begin{bmatrix} 1&2&1&2\\ 3&8&1&12\\ 0&4&1 &2\end{bmatrix} = \begin{bmatrix} 1&2&1&2\\ 0&2&-2&6\\ 0&4&1&2 \end{bmatrix} 
+$$
+
+which is effectively "constructing" the second row of the resulting matrix as 3 times the first row subtracted from the second row then added with 0 times the third row.
+
 
 
 ## Multiplication and Inverse Matrices

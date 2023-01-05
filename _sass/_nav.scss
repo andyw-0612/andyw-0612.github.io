@@ -1,3 +1,5 @@
+/* variable from nav.scss is accessible from _style.scss since it's imported before _style.css in the same document */
+
 $min-side-nav-width: 275px; // the minimum width of the side nav bar on large displays
 $side-nav-background: #fafbfd;
 $nav-link-height: 1.5; // line height for everything inside side navigation, also serves as the height for each side nav 'bar'
