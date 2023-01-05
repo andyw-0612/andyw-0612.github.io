@@ -404,6 +404,18 @@ body::-webkit-scrollbar{
   border-radius: $border-radius;
 }
 
+/* iFrames
+   ========================================================================== */
+
+/**
+ * 1. iFrames are centered
+ **/
+
+iframe{
+  display: block;
+  margin: 0 auto;
+}
+
 /* Elements on Focus
    ========================================================================== */
 
