@@ -1,5 +1,5 @@
 ---
-title: Some Guidance
+title: Site Configuration
 ---
 <header>
 Information here and there about the notes and the website
