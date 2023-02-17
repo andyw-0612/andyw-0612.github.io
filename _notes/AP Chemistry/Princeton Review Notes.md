@@ -2,11 +2,13 @@
 has_parent: AP Chemistry
 title: Princeton Review Notes
 ---
+
+<hr>
 ## Table of Contents
 {:.no_toc .toc-heading}
 1. 
 {:toc}
-
+<hr>
 
 ## Reminders
 Some reminders and notes on things that might be forgotten
