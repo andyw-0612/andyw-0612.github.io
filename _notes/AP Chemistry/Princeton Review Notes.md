@@ -36,3 +36,13 @@ Includes Acid-Bases Equilibrium, $K_{sp}$, and buffers.
 ## Electrochemistry 
 -  When identifying which ==species== are oxidized/reduced, remember it is referring to the ion/molecule, not the actual element. 
 
+
+## Important Review Topics
+- Kinetics
+- Hess's Law
+- Potential Energy Diagrams
+	- High potential energy -> repulse
+	- Low potential energy -> attract
+- When coefficients double, K squares.
+- Pay attention to what's provided in the original problem
+- When K is greater than 0, G is less than 0
