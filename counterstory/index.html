@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmic Zoom: From Stargazer to Sphere</title>
+    <style>
+        body {
+            margin: 0;
+            overflow-x: hidden;
+            overflow-y: hidden; /* <-- ADD THIS */
+            background-color: #000;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* --- NEW: Intro & Conclusion Text Styles --- */
+        .fullscreen-text {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: #000;
+            color: white;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            box-sizing: border-box; /* Ensures padding doesn't break layout */
+        }
+
+        .fullscreen-text .text-content {
+            max-width: 600px;
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: #eee;
+        }
+
+        .fullscreen-text h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 1.5rem;
+        }
+        
+        .fullscreen-text p {
+            margin-bottom: 1.5rem;
+        }
+
+        /* Conclusion is hidden by default */
+        #conclusion-text {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        /* --- END: Intro & Conclusion Styles --- */
+
+
+        /* The canvas stays fixed behind the scrollable height */
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: 1;
+            pointer-events: none; 
+        }
+
+        /* Scroll height controls animation duration */
+        #scroll-height {
+            height: 2500vh; /* You may want to increase this to 900vh */
+            position: relative;
+            z-index: 0;
+        }
+
+        /* The fade-to-black overlay */
+        #transition-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        /* UI Markers Container */
+        #ui-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 20;
+            pointer-events: none;
+        }
+
+        .marker {
+            position: absolute;
+            top: 0; 
+            left: 0;
+            width: 340px; 
+            max-width: 80vw;
+            background: rgba(10, 15, 30, 0.8); 
+            backdrop-filter: blur(10px);
+            border: none;
+            border-top: 1px solid rgba(100, 200, 255, 0.5);
+            border-radius: 12px;
+            color: white;
+            padding: 20px 24px;
+            cursor: pointer;
+            pointer-events: auto;
+            transform: translate(30px, -50%); 
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.1), 
+                        0 0 40px rgba(0, 210, 255, 0.05);
+            visibility: hidden; 
+            opacity: 0;
+        }
+        
+        #marker-vision {
+            visibility: visible;
+            opacity: 1;
+            /* This is being set by JS now, but we can use CSS to override */
+            /* transform: translate(30px, 0.5vh); */ /* Note: JS will override this */
+        }
+
+        .marker:hover {
+            background: rgba(30, 30, 50, 0.9);
+            border-color: #00d2ff;
+            box-shadow: 0 0 30px rgba(0, 210, 255, 0.2);
+        }
+
+        #marker-watchtower {
+            transform: translate(30px, 90px); 
+        }
+
+        .marker h3 {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, 
+                         Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            pointer-events: none;
+        }
+
+        .marker-content {
+            max-height: 0;
+            opacity: 0;
+            transition: max-height 0.4s ease, opacity 0.4s ease;
+            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, 
+                         Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+        }
+
+        .marker.expanded .marker-content {
+            max-height: 400px;
+            opacity: 1;
+            margin-top: 15px;
+            overflow-y: auto;
+        }
+
+        .marker-content p {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: #d0d8ff;
+            margin: 0 0 15px 0;
+        }
+        
+        .marker-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        .marker-img {
+            width: 100%;
+            height: 120px;
+            border-radius: 6px; 
+            margin-bottom: 15px;
+            object-fit: cover;
+            display: block;
+        }
+
+
+        #instructions {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255,255,255,0.5);
+            z-index: 30;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            pointer-events: none;
+        }
+    </style>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+</head>
+<body>
+
+    <div id="intro-text" class="fullscreen-text">
+        <div class="text-content">
+            <h2>Intro</h2>
+            <p>SCROLL DOWN...Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+               laoreet, sapien et sollicitudin euismod, quam velit feugiat
+               sapien, sed consequat nunc augue sed augu. Aliquam erat
+               volutpat. Proin interdum, erat et aliquam feugiat, massa
+               odio imperdiet dolor, in sodales purus ipsum in est.
+               Phasellus in tellus non mi facilisis finibus.
+            </p>
+        </div>
+    </div>
+
+
+    <div id="canvas-container"></div>
+    <div id="transition-overlay"></div>
+    <div id="scroll-height"></div>
+    <div id="instructions">Scroll to Zoom &bull; Click Labels to Expand</div>
+
+    <div id="ui-layer">
+        <div id="marker-vision" class="marker">
+            <h3>Hidden Figures Example</h3>
+            <div class="marker-content">
+                <img src="https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80" class="marker-img" alt="Galaxy">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+               laoreet, sapien et sollicitudin euismod, quam velit feugiat
+               sapien, sed consequat nunc augue sed augu. Aliquam erat
+               volutpat. Proin interdum, erat et aliquam feugiat, massa
+               odio imperdiet dolor, in sodales purus ipsum in est.
+               Phasellus in tellus non mi facilisis finibus.</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+               laoreet, sapien et sollicitudin euismod, quam velit feugiat
+               sapien, sed consequat nunc augue sed augu. Aliquam erat
+               volutpat. Proin interdum, erat et aliquam feugiat, massa
+               odio imperdiet dolor, in sodales purus ipsum in est.
+               Phasellus in tellus non mi facilisis finibus.</p>
+            </div>
+        </div>
+
+        <div id="marker-watchtower" class="marker">
+            <h3>ISS Example</h3>
+            <div class="marker-content">
+                <img src="https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80" class="marker-img" alt="Satellite">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+               laoreet, sapien et sollicitudin euismod, quam velit feugiat
+               sapien, sed consequat nunc augue sed augu. Aliquam erat
+               volutpat. Proin interdum, erat et aliquam feugiat, massa
+               odio imperdiet dolor, in sodales purus ipsum in est.
+               Phasellus in tellus non mi facilisis finibus.</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+               laoreet, sapien et sollicitudin euismod, quam velit feugiat
+               sapien, sed consequat nunc augue sed augu. Aliquam erat
+               volutpat. Proin interdum, erat et aliquam feugiat, massa
+               odio imperdiet dolor, in sodales purus ipsum in est.
+               Phasellus in tellus non mi facilisis finibus.</p>
+            </div>
+        </div>
+
+        <div id="marker-home" class="marker">
+            <h3>Overview Effect Example</h3>
+            <div class="marker-content">
+                <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80" class="marker-img" alt="Earth">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+               laoreet, sapien et sollicitudin euismod, quam velit feugiat
+               sapien, sed consequat nunc augue sed augu. Aliquam erat
+               volutpat. Proin interdum, erat et aliquam feugiat, massa
+               odio imperdiet dolor, in sodales purus ipsum in est.
+               Phasellus in tellus non mi facilisis finibus.</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+               laoreet, sapien et sollicitudin euismod, quam velit feugiat
+               sapien, sed consequat nunc augue sed augu. Aliquam erat
+               volutpat. Proin interdum, erat et aliquam feugiat, massa
+               odio imperdiet dolor, in sodales purus ipsum in est.
+               Phasellus in tellus non mi facilisis finibus.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="conclusion-text" class="fullscreen-text">
+        <div class="text-content">
+            <h2>Conclusion</h2>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+                laoreet, sapien et sollicitudin euismod, quam velit feugiat
+                sapien, sed consequat nunc augue sed augu. Aliquam erat
+                volutpat. Proin interdum, erat et aliquam feugiat, massa
+                odio imperdiet dolor.
+            </p>
+            
+            <h2>Notes</h2>
+            <p>
+                Project requirements and supplementary notes can go here.
+                Phasellus in tellus non mi facilisis finibus. Duis suscipit
+                justo nec tellus tincidunt, at vehicula ex pharetra.
+                Integer quis ex id arcu pulvinar ultrices.
+            </p>
+        </div>
+    </div>
+
+<script>
+        // --- Configuration & Globals ---
+        gsap.registerPlugin(ScrollTrigger);
+        THREE.legacyMode = false;
+
+        const loadingManager = new THREE.LoadingManager();
+        
+        // This function will run when all assets are loaded
+        loadingManager.onLoad = () => {
+            console.log("All assets loaded!");
+            // Re-enable scrolling
+            document.body.style.overflowY = 'auto'; 
+        };
+        
+        const container = document.getElementById('canvas-container');
+        const overlay = document.getElementById('transition-overlay');
+        
+        // State
+        let currentSceneName = 'surface'; 
+        const spaceCameraTarget = { x: 4.5, y: 0, z: 0 }; 
+        
+        // Three.js Basics
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.shadowMap.enabled = true;
+        renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+        container.appendChild(renderer.domElement);
+
+        // --- Texture Loader ---
+        const textureLoader = new THREE.TextureLoader(loadingManager);
+        const loader = new THREE.GLTFLoader(loadingManager);        
+        
+        const earthMap = textureLoader.load('land_ocean_ice_8192.jpeg');
+        earthMap.colorSpace = THREE.SRGBColorSpace;
+        const earthBump = textureLoader.load('8081_earthbump10k.png'); 
+        const earthSpec = textureLoader.load('8081_earthspec10k.jpg');
+        const cloudMap = textureLoader.load('cloud_combined_2048.jpg');
+        const envMap = textureLoader.load('starmap_8k.jpg');
+
+
+        // --- SCENE 1: THE SURFACE ---
+        
+        // --- ORIGINAL NIGHT SKY CODE (Restored) ---
+        const sceneSurface = new THREE.Scene();
+        sceneSurface.background = new THREE.Color(0x050510); 
+        sceneSurface.fog = new THREE.FogExp2(0x050510, 0.025);
+
+        const cameraSurface = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+        cameraSurface.position.set(0, 1.6, 5);
+        cameraSurface.lookAt(0, 1.5, 0);
+
+        // Lighting Surface
+        const ambientLightS1 = new THREE.AmbientLight(0x404040, 2);
+        sceneSurface.add(ambientLightS1);
+        const moonLight = new THREE.DirectionalLight(0xFFFFFF , 1.5);
+        moonLight.position.set(-5, 10, -5);
+        moonLight.castShadow = true;
+        sceneSurface.add(moonLight);
+
+        const groundGeo = new THREE.CircleGeometry(30, 32);
+        const groundMat = new THREE.MeshStandardMaterial({ color: 0x1a2b1a, roughness: 0.8 });
+        const ground = new THREE.Mesh(groundGeo, groundMat);
+        ground.rotation.x = -Math.PI / 2;
+        ground.receiveShadow = true;
+        sceneSurface.add(ground);
+        
+        function createStars(count, spread) {
+            const geom = new THREE.BufferGeometry();
+            const pos = [];
+            for(let i=0; i<count; i++) {
+                pos.push((Math.random() - 0.5) * spread);
+                pos.push(Math.random() * spread/2 + 5);
+                pos.push((Math.random() - 0.5) * spread);
+            }
+            geom.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+            const mat = new THREE.PointsMaterial({color: 0xffffff, size: 0.05});
+            return new THREE.Points(geom, mat);
+        }
+        const surfaceStars = createStars(500, 60);
+        sceneSurface.add(surfaceStars);
+        // --- END ORIGINAL NIGHT SKY CODE ---
+
+
+        /*
+        // --- COMMENTED OUT: DAYTIME CODE ---
+        const sceneSurface = new THREE.Scene();
+        const skyColor = new THREE.Color(0x87CEEB); // A bright sky blue
+        sceneSurface.background = skyColor; // Set background to sky blue
+        sceneSurface.fog = new THREE.FogExp2(skyColor, 0.02); // Add matching fog
+
+        const cameraSurface = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+        cameraSurface.position.set(0, 1.6, 5);
+        cameraSurface.lookAt(0, 1.5, 0);
+
+        // --- Lighting Surface (Daytime) ---
+        const ambientLightS1 = new THREE.AmbientLight(0xFFFFFF, 0.8); // Brighter, whiter ambient
+        sceneSurface.add(ambientLightS1);
+        
+        // Renamed 'moonLight' to 'sunLightS1'
+        const sunLightS1 = new THREE.DirectionalLight(0xFFFFFF , 1.0); // Brighter sun
+        sunLightS1.position.set(5, 10, 5); // Positive position for a sun
+        sunLightS1.castShadow = true;
+        sceneSurface.add(sunLightS1);
+
+        // Brighter green grass for daytime
+        const groundGeo = new THREE.CircleGeometry(30, 32);
+        const groundMat = new THREE.MeshStandardMaterial({ color: 0x4A7945, roughness: 0.8 }); 
+        const ground = new THREE.Mesh(groundGeo, groundMat);
+        ground.rotation.x = -Math.PI / 2;
+        ground.receiveShadow = true;
+        sceneSurface.add(ground);
+        // --- END DAYTIME CODE ---
+        */
+
+
+        // --- Load Human Model ---
+        loader.load(
+            'chalkboard.glb', // <-- Your chalkboard model's file name
+            (gltf) => {
+                const model = gltf.scene;
+                model.position.set(0, 0.75, -1.0); 
+                model.scale.set(3.27, 3.27, 3.27); 
+                model.rotation.y = -Math.PI / 6; 
+                model.traverse((child) => {
+                    if (child.isMesh) {
+                        child.castShadow = true;
+                    }
+                });
+                sceneSurface.add(model);
+            },
+            undefined, (error) => { console.error(error); }
+        );     
+
+        // loader.load(
+        //     'black_women_nurse.glb', 
+        //     (gltf) => {
+        //         const model = gltf.scene;
+        //         model.position.set(-3.5, 0, -1.0); 
+        //         model.scale.set(0.5, 0.5, 0.5); 
+        //         model.rotation.y = -3 *Math.PI / 2; 
+        //         model.traverse((child) => {
+        //             if (child.isMesh) {
+        //                 child.castShadow = true;
+        //             }
+        //         });
+        //         sceneSurface.add(model);
+        //     },
+        //     undefined, (error) => { console.error(error); }
+        // );   
+
+        // --- Load Telescope Model ---
+        const telescopeLabelAnchor = new THREE.Object3D();
+        loader.load(
+            'telescope.glb', // Your model's file name
+            (gltf) => {
+                const model = gltf.scene;
+                model.position.set(-1.8, 0, 0);
+                model.scale.set(2.0, 2.0, 2.0); 
+                model.traverse((child) => {
+                    if (child.isMesh) {
+                        child.castShadow = true;
+                    }
+                });
+                // Add the label anchor to the model itself
+                // (or add the model to a group, this is simpler)
+                sceneSurface.add(model);
+            },
+            undefined, (error) => { console.error(error); }
+        );
+
+        // Position it high above the telescope
+        telescopeLabelAnchor.position.set(0.8, 2.0, 0); 
+        sceneSurface.add(telescopeLabelAnchor);
+
+
+        // --- SCENE 2: SPACE ---
+        const sceneSpace = new THREE.Scene();
+        sceneSpace.background = envMap; // Set background to star map
+
+        const cameraSpace = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 2000);
+        cameraSpace.position.set(0, 0, 20);
+
+        // --- LIGHTING ---
+        const sunLight = new THREE.DirectionalLight(0xffffff, 0.8);
+        sunLight.position.set(10, 5, 20);
+        sceneSpace.add(sunLight);
+
+        const hemiLight2 = new THREE.HemisphereLight(
+            0x4090ff, // "Sky" color (blue from Earth's halo)
+            0x080820, // "Ground" color (dark from space)
+            0.5       // Intensity
+        );
+        sceneSpace.add(hemiLight2);
+        
+        // --- EARTH MATERIAL ---
+        const earthGeo = new THREE.SphereGeometry(5, 64, 64);
+        const earthMat = new THREE.MeshStandardMaterial({ 
+            map: earthMap,
+            bumpMap: earthBump, 
+            specularMap: earthSpec,
+            bumpScale: 0.05,
+            roughness: 0.5, 
+            metalness: 0.0
+        });
+        
+        const earth = new THREE.Mesh(earthGeo, earthMat);
+        sceneSpace.add(earth);
+
+        const earthLabelAnchor = new THREE.Object3D();
+        // Position it slightly above the Earth's surface
+        earthLabelAnchor.position.set(10, 5.5, 0); 
+        sceneSpace.add(earthLabelAnchor);
+        
+        // --- CLOUD LAYER ---
+        const cloudGeo = new THREE.SphereGeometry(5.03, 64, 64);
+        const cloudMat = new THREE.MeshPhongMaterial({
+            map: cloudMap,
+            transparent: true,
+            opacity: 0.7,
+            blending: THREE.AdditiveBlending, 
+            side: THREE.DoubleSide,
+            shininess: 0
+        });
+        const clouds = new THREE.Mesh(cloudGeo, cloudMat);
+        sceneSpace.add(clouds);
+
+        
+        // --- NEW: HALO SHADER ---
+        const vertexShader = `...`; // (Shader code omitted for brevity)
+        const fragmentShader = `...`; // (Shader code omitted for brevity)
+
+        // 2. Create the material WITH uniforms
+        const atmosphereMat = new THREE.ShaderMaterial({
+            vertexShader: `
+                varying vec3 vNormal;
+                void main() {
+                    vNormal = normalize( normalMatrix * normal );
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+                }
+            `,
+            fragmentShader: `
+                varying vec3 vNormal;
+                uniform float uGlowPower;
+                uniform float uGlowIntensity;
+                uniform vec3 uGlowColor;
+                void main() {
+                    float intensity = pow( 0.6 - dot( vNormal, vec3( 0.0, 0.0, 1.0 ) ), uGlowPower ); 
+                    gl_FragColor = vec4( uGlowColor, 1.0 ) * intensity * uGlowIntensity;
+                }
+            `,
+            blending: THREE.AdditiveBlending,
+            side: THREE.BackSide,
+            transparent: true,
+            uniforms: {
+                'uGlowPower': { value: 4.0 },
+                'uGlowIntensity': { value: 3.0 },
+                'uGlowColor': { value: new THREE.Color(0.3, 0.6, 1.0) } 
+            }
+        });
+        const atmosphereGeo = new THREE.SphereGeometry(5.2, 64, 64);
+        const atmosphere = new THREE.Mesh(atmosphereGeo, atmosphereMat);
+        sceneSpace.add(atmosphere);
+        // --- END OF HALO SHADER ---
+
+
+        // --- SATELLITE ---
+        const satelliteGroup = new THREE.Group();
+        satelliteGroup.position.set(5.5, 1.0, 2.0);
+        satelliteGroup.rotation.set(0.8, -0.5, 0.1); 
+        sceneSpace.add(satelliteGroup);
+
+        loader.load(
+            'iss.glb', 
+            (gltf) => {
+                const model = gltf.scene;
+                model.traverse((child) => {
+                    if (child.isMesh) {
+                        child.castShadow = true;
+                        child.receiveShadow = true;
+                    }
+                });
+                model.scale.set(0.15, 0.15, 0.15); 
+                model.position.set(0, 0, 0);
+                satelliteGroup.add(model);
+            },
+            undefined, (error) => { console.error(error); }
+        );
+
+
+        // --- UI LOGIC ---
+        document.querySelectorAll('.marker').forEach(marker => {
+            marker.addEventListener('click', () => {
+                marker.classList.toggle('expanded');
+            });
+        });
+
+        const poi = {
+            vision: { obj: telescopeLabelAnchor, el: document.getElementById('marker-vision') },
+            watchtower: { obj: satelliteGroup, el: document.getElementById('marker-watchtower') },
+            home: { obj: earthLabelAnchor, el: document.getElementById('marker-home') }
+        };
+
+        function updateUI() {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            const widthHalf = width / 2;
+            const heightHalf = height / 2;
+
+            for (const key in poi) {
+                const item = poi[key];
+                const el = item.el;
+                const activeCam = currentSceneName === 'surface' ? cameraSurface : cameraSpace;
+                
+                const pos = item.obj.position.clone();
+                item.obj.updateMatrixWorld(); 
+                pos.project(activeCam);
+
+                if (pos.z > 1) {
+                    el.style.display = 'none';
+                } else {
+                    el.style.display = 'block'; 
+                    const x = (pos.x * widthHalf) + widthHalf;
+                    const y = -(pos.y * heightHalf) + heightHalf;
+                    
+                    el.style.left = `${x}px`;
+                    el.style.top = `${y}px`;                
+                }
+            }
+        }
+
+        // --- ANIMATION SEQUENCE ---
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: "#scroll-height",
+                start: "top top",
+                end: "bottom bottom",
+                scrub: true,
+            }
+        });
+
+        // --- NEW: Intro Fade
+        tl.to("#intro-text", { 
+            opacity: 0, 
+            duration: 0.5, 
+            onComplete: () => {
+                document.getElementById('intro-text').style.pointerEvents = 'none';
+            }
+        });
+
+        tl.to(cameraSurface.position, { y: 8, z: 2, duration: 2, ease: "power2.inOut" })
+          .to(cameraSurface.rotation, { x: -Math.PI/2, duration: 2, ease: "power2.inOut" }, "<")
+          .to('#marker-vision', { autoAlpha: 0, duration: 0.5 }, "-=0.5");
+
+        tl.to(overlay, { 
+            opacity: 1, 
+            duration: 1, 
+            onComplete: () => {
+                currentSceneName = 'space';
+                cameraSpace.position.set(0, 0, 9);
+                spaceCameraTarget.x = 4.5;
+                spaceCameraTarget.y = 0;
+                spaceCameraTarget.z = 0;
+                cameraSpace.lookAt(spaceCameraTarget.x, spaceCameraTarget.y, spaceCameraTarget.z);
+            }
+        });
+
+        tl.to(overlay, { 
+            opacity: 0, 
+            duration: 1.5,
+            onReverseComplete: () => { currentSceneName = 'surface'; }
+        });
+        
+        tl.fromTo(cameraSpace.position, 
+            { z: 9 }, 
+            { 
+                z: 12, 
+                duration: 1.5, 
+                ease: "none",
+                onUpdate: () => {
+                    cameraSpace.lookAt(spaceCameraTarget.x, spaceCameraTarget.y, spaceCameraTarget.z);
+                }
+            }, 
+            "<"
+        );
+        tl.to('#marker-watchtower', { autoAlpha: 1, duration: 0.5 }, "<");
+
+        tl.addLabel("centerAndZoom");
+
+        const camAnim = {
+            camZ: 12,    
+            targetX: 4.5 
+        };
+
+        tl.to(camAnim, {
+            camZ: 60,     
+            targetX: 0,   
+            duration: 6,
+            ease: "power1.inOut", 
+            onUpdate: () => {
+                cameraSpace.position.z = camAnim.camZ;
+                spaceCameraTarget.x = camAnim.targetX;
+                cameraSpace.lookAt(spaceCameraTarget.x, spaceCameraTarget.y, spaceCameraTarget.z);
+            }
+        }, "centerAndZoom");
+
+        tl.to(satelliteGroup.scale, { x: 0, y: 0, z: 0, duration: 4, ease: "power1.in" }, "centerAndZoom");
+
+        tl.to('#marker-watchtower', { autoAlpha: 0, duration: 0.5 }, "-=3.5");
+        tl.to('#marker-home', { autoAlpha: 1, duration: 1 }, "-=2.0");
+
+        tl.to(cameraSpace.position, { z: 70, duration: 2 });
+
+        // --- NEW: Conclusion Fade
+        tl.to(overlay, { 
+            opacity: 1, 
+            duration: 1.5 
+        });
+        tl.to("#conclusion-text", { 
+            opacity: 1, 
+            visibility: 'visible', 
+            duration: 1.5 
+        }, "<"); // Run at the same time as the fade to black
+
+
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            if (clouds) {
+                clouds.rotation.y += 0.0003;
+                clouds.rotation.x += 0.0001;
+            }
+            
+            earth.rotation.y += 0.0001;
+
+            if (currentSceneName === 'surface') {
+                renderer.render(sceneSurface, cameraSurface);
+            } else {
+                renderer.render(sceneSpace, cameraSpace);
+            }
+
+            updateUI();
+        }
+
+        window.addEventListener('resize', () => {
+            const w = window.innerWidth;
+            const h = window.innerHeight;
+            
+            cameraSurface.aspect = w/h;
+            cameraSurface.updateProjectionMatrix();
+            
+            cameraSpace.aspect = w/h;
+            cameraSpace.updateProjectionMatrix();
+            
+            renderer.setSize(w, h);
+        });
+    
+        animate();
+
+    </script>
+</body>
+</html>
