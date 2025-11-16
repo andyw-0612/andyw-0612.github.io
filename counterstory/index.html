@@ -105,7 +105,7 @@
             position: absolute;
             top: 0; 
             left: 0;
-            width: 340px; 
+            width: 300px; 
             max-width: 80vw;
             background: rgba(10, 15, 30, 0.8); 
             backdrop-filter: blur(10px);
@@ -116,7 +116,7 @@
             padding: 20px 24px;
             cursor: pointer;
             pointer-events: auto;
-            transform: translate(30px, -50%); 
+            /* transform: translate(30px, -50%);  */
             transition: all 0.3s ease;
             box-shadow: 0 0 20px rgba(0, 210, 255, 0.1), 
                         0 0 40px rgba(0, 210, 255, 0.05);
@@ -138,7 +138,7 @@
         }
 
         #marker-watchtower {
-            transform: translate(30px, 90px); 
+            /* transform: translate(30px, 90px);  */
         }
 
         .marker h3 {
@@ -212,7 +212,7 @@
     <div id="intro-text" class="fullscreen-text">
         <div class="text-content">
             <h2>Intro</h2>
-            <p>SCROLL DOWN...Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+            <p>SCROLL DOWN...BEST VIEWED ON LAPTOP...Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
                laoreet, sapien et sollicitudin euismod, quam velit feugiat
                sapien, sed consequat nunc augue sed augu. Aliquam erat
                volutpat. Proin interdum, erat et aliquam feugiat, massa
@@ -481,7 +481,7 @@
         );
 
         // Position it high above the telescope
-        telescopeLabelAnchor.position.set(0.8, 2.0, 0); 
+        telescopeLabelAnchor.position.set(0.8, 3.0, 0); 
         sceneSurface.add(telescopeLabelAnchor);
 
 
@@ -520,7 +520,7 @@
 
         const earthLabelAnchor = new THREE.Object3D();
         // Position it slightly above the Earth's surface
-        earthLabelAnchor.position.set(10, 5.5, 0); 
+        earthLabelAnchor.position.set(5, 5.5, 0); 
         sceneSpace.add(earthLabelAnchor);
         
         // --- CLOUD LAYER ---
@@ -577,7 +577,7 @@
 
         // --- SATELLITE ---
         const satelliteGroup = new THREE.Group();
-        satelliteGroup.position.set(5.5, 1.0, 2.0);
+        satelliteGroup.position.set(4.65, 1.0, 2.0);
         satelliteGroup.rotation.set(0.8, -0.5, 0.1); 
         sceneSpace.add(satelliteGroup);
 
@@ -591,8 +591,8 @@
                         child.receiveShadow = true;
                     }
                 });
-                model.scale.set(0.15, 0.15, 0.15); 
-                model.position.set(0, 0, 0);
+                model.scale.set(0.12, 0.12, 0.12); 
+                model.position.set(0.75, 0.2, 0);
                 satelliteGroup.add(model);
             },
             undefined, (error) => { console.error(error); }
@@ -618,24 +618,67 @@
             const widthHalf = width / 2;
             const heightHalf = height / 2;
 
+            // Visibility logic
+            const isSurface = (currentSceneName === 'surface');
+            const isSpace = (currentSceneName === 'space');
+            
+            document.getElementById('marker-vision').style.visibility = isSurface ? 'visible' : 'hidden';
+            document.getElementById('marker-watchtower').style.visibility = isSpace ? 'visible' : 'hidden';
+            document.getElementById('marker-home').style.visibility = isSpace ? 'visible' : 'hidden';
+
             for (const key in poi) {
                 const item = poi[key];
                 const el = item.el;
                 const activeCam = currentSceneName === 'surface' ? cameraSurface : cameraSpace;
                 
+                if (el.style.visibility === 'hidden') {
+                    el.style.display = 'none';
+                    continue; 
+                }
+
+                // --- NEW FIX ---
+                // Specifically check if the satellite group is scaled to 0
+                // (which you animate in GSAP)
+                if (key === 'watchtower' && satelliteGroup.scale.x < 0.01) {
+                    el.style.display = 'none';
+                    continue;
+                }
+                // --- END NEW FIX ---
+
                 const pos = item.obj.position.clone();
                 item.obj.updateMatrixWorld(); 
                 pos.project(activeCam);
 
-                if (pos.z > 1) {
+                // Use the correct "behind the camera" check
+                if (pos.z > 1) { 
                     el.style.display = 'none';
                 } else {
                     el.style.display = 'block'; 
+                    
+                    // Smart Positioning Logic (from last time)
                     const x = (pos.x * widthHalf) + widthHalf;
                     const y = -(pos.y * heightHalf) + heightHalf;
                     
-                    el.style.left = `${x}px`;
-                    el.style.top = `${y}px`;                
+                    el.style.left = '0px';
+                    el.style.top = '0px';
+
+                    let offsetX = 30; 
+                    let offsetY = -el.offsetHeight / 2; 
+
+                    if (el.id === 'marker-watchtower') {
+                        offsetY = 90;
+                    } else if (el.id === 'marker-vision') {
+                        offsetY = (0.005 * height); 
+                    }
+
+                    const markerWidth = el.offsetWidth;
+                    const padding = 30; 
+                    
+                    if (x + offsetX + markerWidth + padding > width) {
+                        offsetX = -markerWidth - 30;
+                    }
+
+                    el.style.transform = `translate(${x + offsetX}px, ${y + offsetY}px)`;
                 }
             }
         }
