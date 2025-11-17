@@ -8,12 +8,11 @@
         body {
             margin: 0;
             overflow-x: hidden;
-            overflow-y: hidden; /* <-- ADD THIS */
+            overflow-y: hidden; 
             background-color: #000;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        /* --- NEW: Intro & Conclusion Text Styles --- */
         .fullscreen-text {
             position: fixed;
             top: 0;
@@ -72,7 +71,7 @@
 
         /* Scroll height controls animation duration */
         #scroll-height {
-            height: 2500vh; /* You may want to increase this to 900vh */
+            height: 2500vh; 
             position: relative;
             z-index: 0;
         }
@@ -232,19 +231,12 @@
         <div id="marker-vision" class="marker">
             <h3>Hidden Figures Example</h3>
             <div class="marker-content">
-                <img src="https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80" class="marker-img" alt="Galaxy">
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-               laoreet, sapien et sollicitudin euismod, quam velit feugiat
-               sapien, sed consequat nunc augue sed augu. Aliquam erat
-               volutpat. Proin interdum, erat et aliquam feugiat, massa
-               odio imperdiet dolor, in sodales purus ipsum in est.
-               Phasellus in tellus non mi facilisis finibus.</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-               laoreet, sapien et sollicitudin euismod, quam velit feugiat
-               sapien, sed consequat nunc augue sed augu. Aliquam erat
-               volutpat. Proin interdum, erat et aliquam feugiat, massa
-               odio imperdiet dolor, in sodales purus ipsum in est.
-               Phasellus in tellus non mi facilisis finibus.</p>
+                <p>In the 1960s, the reality of the American space race was still bound by the dominant ideologies at the time. At NASA's Langley facility in Virginia, this meant Jim Crow laws were enforced, forcing "human computers" like Katherine Johnson, Dorothy Vaughan, and Mary Jackson to work in segregated units and use separate bathrooms. These women were fighting systemic racial segregation while also navigating gender-based discrimination in a field dominated by men.</p>
+                <img src="https://i.ytimg.com/vi/IJ33QLeuiEY/maxresdefault.jpg" class="marker-img" alt="Galaxy">
+                <p>However, the segregated system was challenged by the passion for exploration. The urgent need to win the space race created a dynamic where competence became more important than prejudice. However, this did not magically end oppression. Even after colored bathroom signs were torn down, the "deep down" systemic oppression remained. For example, Katherine Johnson's white male colleagues refused to let her put her name on the reports she authored and barred her from the flight briefings. This was systemic erasure.</p>
+                <p>
+                    This is where the mission became a tool. The system was forced to recognize their brilliance because the mission's success depended on it. When the IBM computer's numbers were suspect, astronaut John Glenn didn't trust the machine or the male engineers. He trusted her, saying, "Get the girl to check the numbers." In that moment, her indisputable competence made the systemic barriers of race and gender irrelevant. The mission itself became the leverage she and the other women used to force their way into the briefings, get their names on the reports, and begin dismantling the "artificial constructs" of oppression.
+                </p>
             </div>
         </div>
 
@@ -411,7 +403,7 @@
 
         // --- Load Human Model ---
         loader.load(
-            'chalkboard.glb', // <-- Your chalkboard model's file name
+            'chalkboard.glb', 
             (gltf) => {
                 const model = gltf.scene;
                 model.position.set(0, 0.75, -1.0); 
@@ -521,10 +513,6 @@
         const clouds = new THREE.Mesh(cloudGeo, cloudMat);
         sceneSpace.add(clouds);
 
-        
-        // --- NEW: HALO SHADER ---
-        const vertexShader = `...`; // (Shader code omitted for brevity)
-        const fragmentShader = `...`; // (Shader code omitted for brevity)
 
         // 2. Create the material WITH uniforms
         const atmosphereMat = new THREE.ShaderMaterial({
@@ -642,14 +630,11 @@
                     continue; 
                 }
 
-                // --- NEW FIX ---
                 // Specifically check if the satellite group is scaled to 0
-                // (which you animate in GSAP)
                 if (key === 'watchtower' && satelliteGroup.scale.x < 0.01) {
                     el.style.display = 'none';
                     continue;
                 }
-                // --- END NEW FIX ---
 
                 const pos = item.obj.position.clone();
                 item.obj.updateMatrixWorld(); 
