@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>English Counterstory Project</title>
+    <title>Cosmic Zoom: From Stargazer to Sphere</title>
     <style>
         body {
             margin: 0;
@@ -104,7 +104,7 @@
             position: absolute;
             top: 0; 
             left: 0;
-            width: 370px; 
+            width: 400px; 
             max-width: 80vw;
             background: rgba(10, 15, 30, 0.8); 
             backdrop-filter: blur(10px);
@@ -571,7 +571,7 @@
 
         // --- SATELLITE ---
         const satelliteGroup = new THREE.Group();
-        satelliteGroup.position.set(4.65, 1.0, 2.0);
+        satelliteGroup.position.set(4.65, 2.5, 2.0);
         satelliteGroup.rotation.set(0.8, -0.5, 0.1); 
         sceneSpace.add(satelliteGroup);
 
@@ -630,7 +630,6 @@
                     continue; 
                 }
 
-                // Specifically check if the satellite group is scaled to 0
                 if (key === 'watchtower' && satelliteGroup.scale.x < 0.01) {
                     el.style.display = 'none';
                     continue;
@@ -640,28 +639,30 @@
                 item.obj.updateMatrixWorld(); 
                 pos.project(activeCam);
 
-                // Use the correct "behind the camera" check
                 if (pos.z > 1) { 
                     el.style.display = 'none';
                 } else {
                     el.style.display = 'block'; 
                     
-                    // Smart Positioning Logic (from last time)
+                    // --- Smart Positioning Logic ---
                     const x = (pos.x * widthHalf) + widthHalf;
                     const y = -(pos.y * heightHalf) + heightHalf;
                     
                     el.style.left = '0px';
                     el.style.top = '0px';
 
+                    // --- Define Offsets ---
                     let offsetX = 30; 
-                    let offsetY = -el.offsetHeight / 2; 
+                    let offsetY = -el.offsetHeight / 2; // Default: center vertically
 
+                    // Custom overrides
                     if (el.id === 'marker-watchtower') {
-                        offsetY = 90;
+                        offsetY = 90; // Your 90px offset
                     } else if (el.id === 'marker-vision') {
-                        offsetY = (0.005 * height); 
+                        offsetY = (0.005 * height); // 0.5vh
                     }
 
+                    // --- Smart Edge Check (Horizontal) ---
                     const markerWidth = el.offsetWidth;
                     const padding = 30; 
                     
@@ -669,7 +670,24 @@
                         offsetX = -markerWidth - 30;
                     }
 
-                    el.style.transform = `translate(${x + offsetX}px, ${y + offsetY}px)`;
+                    // --- NEW: Smart Edge Check (Vertical) ---
+                    const markerHeight = el.offsetHeight;
+                    const verticalPadding = 0; // 20px from bottom edge
+
+                    // This is the desired Y position for the *top* of the box
+                    let finalY = y + offsetY;
+
+                    // This is the maximum Y position the *top* of the box can have
+                    let maxY = height - markerHeight - verticalPadding;
+                    
+                    // If the desired position is lower than the max, cap it.
+                    if (finalY > maxY) {
+                        finalY = maxY;
+                    }
+                    // --- END NEW CHECK ---
+
+                    // Apply the final, calculated transform
+                    el.style.transform = `translate(${x + offsetX}px, ${finalY}px)`;
                 }
             }
         }
