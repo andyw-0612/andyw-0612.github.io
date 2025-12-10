@@ -7,7 +7,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=VT323&display=swap" rel="stylesheet">
-    <!-- <link rel="stylesheet" href="style.css"> -->
 </head>
 <style>
 /* --- Modern Styles --- */
@@ -70,7 +69,7 @@ body {
     margin: 0;
     padding: 20px;
     box-sizing: border-box;
-    transition: background-color 0.5s; /* For smooth transitions */
+    transition: background-color 0.5s; 
 }
 
 #home-btn-container {
@@ -160,16 +159,13 @@ body {
 
     <div id="intro-card" class="modern-card">
         <h1>The Note-Taking Decision</h1>
-        <p>This project aims to persuade high school and college students that taking math notes is much better on pen and paper than electronically. Because the target audience is very familiar with digital tools, the "modality" for this argument is an interactive website that mimics the choices students face every day.
-        </p>
-        <p>
-            NOTE: the ASCII arts might not display properly on smaller devices, but the text and the experience should still work as intended.
-        </p>
+        <p>This project aims to persuade high school and college students that taking math notes is much better on pen and paper than electronically. Because the target audience is very familiar with digital tools, the "modality" for this argument is an interactive website that mimics the choices students face every day.</p>
+        <p>NOTE: the ASCII arts might not display properly on smaller devices, but the text and the experience should still work as intended.</p>
         <button id="start-btn" class="modern-btn">Start Experience</button>
     </div>
 
     <div id="home-btn-container" class="hidden">
-        <button id="home-btn">> HOME</button>
+        <button id="home-btn">> RESTART</button>
     </div>
     <div class="container hidden" id="main-container">
         <pre id="ascii-art"></pre>
@@ -186,15 +182,12 @@ body {
     </div>
 
 <script>
-    // --- Get All Elements ---
-// Modern elements
+// --- Get All Elements ---
 const introCard = document.getElementById('intro-card');
 const creditsCard = document.getElementById('credits-card');
 const startButton = document.getElementById('start-btn');
 const restartButton = document.getElementById('restart-btn');
 const bodyElement = document.body;
-
-// Retro elements
 const mainContainer = document.getElementById('main-container');
 const homeContainer = document.getElementById('home-btn-container');
 const asciiElement = document.getElementById('ascii-art');
@@ -207,7 +200,7 @@ let typeWriterInterval;
 startButton.addEventListener('click', () => {
     introCard.classList.add('hidden');
     mainContainer.classList.remove('hidden');
-    bodyElement.style.backgroundColor = '#0a0a0a'; // Change to retro background
+    bodyElement.style.backgroundColor = '#0a0a0a'; 
     startStory();
 });
 
@@ -217,7 +210,6 @@ restartButton.addEventListener('click', () => {
 });
 
 homeButton.addEventListener('click', () => {
-    // A simplified home button that just restarts the story
     showStoryNode(1);
 });
 
@@ -229,7 +221,6 @@ function startStory() {
 function showStoryNode(storyNodeId) {
     const storyNode = storyNodes.find(node => node.id === storyNodeId);
     
-    // Show/hide home button container
     if (storyNodeId === 1) {
         homeContainer.classList.add('hidden');
     } else {
@@ -261,12 +252,11 @@ function selectChoice(choice) {
     const nextStoryNodeId = choice.nextId;
     if (!nextStoryNodeId) return;
 
-    // Special ID for showing credits
     if (nextStoryNodeId === 1000) {
         mainContainer.classList.add('hidden');
         homeContainer.classList.add('hidden');
         creditsCard.classList.remove('hidden');
-        bodyElement.style.backgroundColor = '#f0f2f5'; // Change to modern background
+        bodyElement.style.backgroundColor = '#f0f2f5'; 
     } else {
         showStoryNode(nextStoryNodeId);
     }
@@ -274,7 +264,7 @@ function selectChoice(choice) {
 
 function typeWriter(text, onComplete) {
     let i = 0;
-    const speed = 7; // Fast for testing
+    const speed = 20; // 20ms for a retro typing feel
     textElement.textContent = '';
     typeWriterInterval = setInterval(() => {
         if (i < text.length) {
@@ -287,7 +277,7 @@ function typeWriter(text, onComplete) {
     }, speed);
 }
 
-// --- STORY DATA with ASCII Art ---
+// --- STORY DATA ---
 const storyNodes = [
     {
         id: 1,
@@ -300,18 +290,18 @@ const storyNodes = [
             / ^^ \     /=========================/ ^^ \===|
            /  []  \   /=========================/  []  \==|
           /________\ /=========================/________\=|
-       *  |        |/==========================|        |=|
+       * |        |/==========================|        |=|
       *** | ^^  ^^ |---------------------------| ^^  ^^ |--
      *****| []  [] |           _____           | []  [] | |
-    *******        |          /_____\          |      * | |
+    ******* |          /_____\          |      * | |
    *********^^  ^^ |  ^^  ^^  |  |  |  ^^  ^^  |     ***| |
   ***********]  [] |  []  []  |  |  |  []  []  | ===***** |
- *************     |         @|__|__|@         |/ |*******|
-***************   ***********--=====--**********| *********
+ ************* |         @|__|__|@         |/ |*******|
+*************** ***********--=====--**********| *********
 ***************___*********** |=====| **********|***********
- *************     ********* /=======\ ******** | *********
+ ************* ********* /=======\ ******** | *********
 `,
-        text: "The lecture begins. It's MATH 334: Accelerated Honors Advanced Calculus (yes that's a real class at UW!) The professor looks at you. It's time to take notes. What is your tool of choice? (please explore all paths! some paths are longer than others)",
+        text: "The lecture begins. It's MATH 334: Accelerated Honors Advanced Calculus. The professor looks at you. It's time to take notes. What is your tool of choice?",
         choices: [
             { text: 'A simple notebook and pen.', nextId: 2 },
             { text: 'My powerful digital device.', nextId: 3 }
@@ -326,10 +316,10 @@ const storyNodes = [
   /  _  \\
  C  / \\  C
 `,
-        text: "You open to a clean page. It's a blank canvas for your thoughts. The professor sketches a graph; you sketch it too. The ideas flow directly from your mind to the paper, creating strong neural pathways.",
+        text: "You open to a clean page. A blank canvas. The professor sketches a graph; you sketch it too. The ideas flow directly from your mind to the paper.",
         choices: [
             { text: "Continue down the path of focus.", nextId: 10 },
-            { text: "You see another student taking notes with their computer, their notes looks colorful and aesthetic", nextId: 2.5 }
+            { text: "You see another student with colorful digital notes...", nextId: 2.5 }
         ]
     },
     {
@@ -337,9 +327,10 @@ const storyNodes = [
         ascii: `
  <.<   >.>
 `,
-        text: "You get distracted by the other student's notes, thinking that their note taking method is likely more effective.",
+        text: "You get distracted by the other student's aesthetic notes. You wonder if that method is more effective.",
         choices: [
-            { text: "You choose to open up your laptop and takes notes on there instead", nextId: 3 }
+            { text: "Switch to laptop.", nextId: 3 },
+            { text: "Ignore them and stick to paper.", nextId: 10 }
         ]
     },
     {
@@ -357,14 +348,8 @@ const storyNodes = [
      |   _______   |  /
     /|  (_______)  | /
    ( |_____________|/
-    \
-.=======================.
-| ::::::::::::::::  ::: |
-| ::::::::::::::[]  ::: |
-|   -----------     ::: |
-=========================
 `,
-        text: "You open your laptop. The screen glows, a portal to the task... and a thousand distractions. How will you capture the complex formulas?",
+        text: "You open your laptop. The screen glows. A portal to the task... and a thousand distractions. How will you capture the complex formulas?",
         choices: [
             { text: 'Open a note-taking app.', nextId: 4 },
             { text: 'Use an iPad and digital stylus.', nextId: 5 }
@@ -378,10 +363,10 @@ const storyNodes = [
  / | \\
  o | o
 `,
-        text: "You look over to the student next to you and see that their notes are being rendered into beautiful math equations, you realize that you don't know how to do that.",
+        text: "You look over to the student next to you. Their notes are beautiful math equations rendered in code. You realize you don't know how to do that.",
         choices: [
-            { text: "Just give up and use pen and paper again.", nextId: 2 },
-            { text: "Keep going and thinking it will be worth it.", nextId: 6 }
+            { text: "Give up and use pen and paper.", nextId: 2 },
+            { text: "Learn the code. It will be worth it.", nextId: 6 }
         ]
     },
     {
@@ -392,7 +377,7 @@ const storyNodes = [
 |  [1] New MSG!  |
 '------------------'
 `,
-        text: "You open your note app. You have 256 colors and 15 pen styles. You spend five minutes color-coding your title. Then, a notification slides in from the corner of the screen. Your focus is shattered.",
+        text: "You open your note app. You have 256 colors. You spend five minutes color-coding your title. Then, a notification slides in.",
         choices: [
             { text: 'A couple days before finals...', nextId: 5.1 }
         ]
@@ -407,7 +392,7 @@ const storyNodes = [
    '~~~'
    GRADE: C-
 `,
-        text: "Since you took notes on your iPad, all the notes are neatly organized... But as you review, you realize that even though the notes are color coded and pretty, you sacrificed the time to take notes 'your way' and instead just copied the notes... the review is not as effective. You did not get the score you hoped for on the final.",
+        text: "Your digital notes are organized and pretty. But because you 'copied' rather than 'synthesized' (a key benefit of slow handwriting), the concepts didn't stick. You get a C-.",
         choices: [
             { text: 'See the conclusion.', nextId: 999 }
         ]
@@ -419,15 +404,9 @@ const storyNodes = [
 | ~ | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 0 | [ | ] | <-    |
 |---'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-----|
 | ->| | " | , | . | P | Y | F | G | C | R | L | / | = |  \  |
-|-----',--',--',--',--',--',--',--',--',--',--',--',--'-----|
-| Caps | A | O | E | U | I | D | H | T | N | S | - |  Enter |
-|------'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'--------|
-|        | ; | Q | J | K | X | B | M | W | V | Z |          |
-|------,-',--'--,'---'---'---'---'---'---'-,-'---',--,------|
-| ctrl |  | alt |                          | alt  |  | ctrl |
-'------'  '-----'--------------------------'------'  '------'
+'-----------------------------------------------------------'
 `,
-        text: "After class, you ask the student... They tell you that the 'code' is called LaTeX. You spent the entire night learning how to write LaTeX... instead of doing the homework.",
+        text: "You discover the 'code' is called LaTeX. You spend the entire night learning syntax instead of doing the homework.",
         choices: [
             { text: 'The next day...', nextId: 7 }
         ]
@@ -437,10 +416,10 @@ const storyNodes = [
         ascii: `
 \\int_{a}^{b} f(x)\\,dx
 `,
-        text: "The professor writes a simple integral. You type: '\\int_{a}^{b} f(x)\\,dx'. Your fingers fly across the keyboard, but you're translating, not learning... Alas, you do get a grasp of LaTeX and note taking becomes faster.",
+        text: "The professor writes a simple integral. You type: '\\int_{a}^{b} f(x)\\,dx'. Your fingers fly, but you're translating code, not processing math.",
         choices: [
             { text: 'Keep taking notes with LaTeX.', nextId: 8 },
-            { text: 'Switch to the iPad and apple pencil.', nextId: 5 }
+            { text: 'Switch to iPad.', nextId: 5 }
         ]
     },
     {
@@ -451,12 +430,11 @@ const storyNodes = [
       |  /
       | /
 `,
-        text: "You discover you have a huge problem. Graphs. When the professor starts drawing graphs on the blackboard, your LaTeX fails to do so. You then frantically scribble down the graphs on a piece of paper...",
+        text: "Problem: Graphs. The professor draws a complex curve. Your LaTeX fails. You panic.",
         choices: [
-            { text: "Quit taking notes on computer and go back to pen and paper.", nextId: 2 },
-            { text: "Go the iPad route.", nextId: 5 },
-            { text: "Continue using computer, thinking it's worth it.", nextId: 9 },
-            { text: "Your friend missed class and asks for your notes.", nextId: 20 }
+            { text: "Quit digital. Back to pen and paper.", nextId: 2 },
+            { text: "Power through with the laptop.", nextId: 9 },
+            { text: "Your friend asks for a copy of your notes.", nextId: 20 }
         ]
     },
     {
@@ -467,10 +445,8 @@ const storyNodes = [
   \\   /
    \\ /
     X
-   / \\
-  /   \\
 `,
-        text: "During finals week, although your notes looks like you just published your PhD dissertation, your mind is blank... the lack of writing and repetition discourages learning. You ended up failing the final.",
+        text: "During finals, your notes look like a textbook, but your mind is blank. The lack of tactile writing discouraged deep encoding. You fail the final.",
         choices: [
             { text: 'See the conclusion.', nextId: 999 }
         ]
@@ -486,7 +462,7 @@ const storyNodes = [
  \\    /
   '--'
 `,
-        text: "The professor is drawing graphs, and you can easily replicate that and as the year goes on your 3D drawing skill actually improves!",
+        text: "The professor draws graphs. You replicate them instantly on paper. Your spatial understanding improves.",
         choices: [
             { text: 'This feels intuitive.', nextId: 11 }
         ]
@@ -499,10 +475,10 @@ A ---> B
 |      v
 D <--- C
 `,
-        text: "With pen and paper you are able to take notes non linearly, drawing connection and arrows from here to there.",
+        text: "You draw non-linear arrows, connecting concepts freely. This is flexible.",
         choices: [
             { text: 'This is how learning should feel.', nextId: 100 },
-            { text: 'A week before the midterm, you misplace your notebook.', nextId: 12}
+            { text: 'DISASTER! You lose your notebook.', nextId: 12}
         ]
     },
     {
@@ -514,9 +490,10 @@ D <--- C
   /   \\
  //_ _\\\\
 `,
-        text: "Panic sets in. Your entire semester's work is gone... This highlights a clear weakness of the analog method: physical notes can be lost.",
+        text: "It's gone. You check the Lost & Found... it's empty. Your semester of work is physically missing. This is the major risk of pen and paper notes.",
         choices: [
-            { text: 'You eventually find it in the lost-and-found.', nextId: 13 }
+            { text: 'Panic and give up.', nextId: 9 },
+            { text: 'Realize something surprising...', nextId: 13 }
         ]
     },
     {
@@ -527,9 +504,23 @@ D <--- C
 (   )
  ' '
 `,
-        text: "Relief. But something interesting happened... To figure out what was missing, you had to mentally reconstruct lectures from memory. This high-stakes, unplanned review session forced you to recall information more deeply than ever.",
+        text: "You sit down to study from memory. Surprisingly, you remember the shapes of the graphs and the flow of the equations. Because you WROTE them by hand, the memory was encoded in your brain, not just on the paper.",
         choices: [
-            { text: "The scare actually strengthened your understanding.", nextId: 100 }
+            { text: "The act of writing saved you.", nextId: 14 }
+        ]
+    },
+    {
+        id: 14,
+        ascii: `
+      *
+  * *
+* SUCCESS B+ *
+  * *
+      *
+`,
+        text: "You didn't get an A+ because you couldn't review the details, but you secured a solid B+ because the core concepts were locked in your mind. If you had typed them, you might have had the file, but not the knowledge.",
+        choices: [
+            { text: 'See the conclusion.', nextId: 999 }
         ]
     },
     {
@@ -543,17 +534,19 @@ D <--- C
    /'\\_   _/ '\\
    \\___)=(___/
 `,
-        text: "Your friend missed class. With one click, you export a perfect, clean PDF of your LaTeX notes and send it to them. It's incredibly efficient and convenient. A clear win for digital.",
+        text: "Your friend missed class. With one click, you email them a perfect PDF. Digital is undeniably superior for sharing and archiving.",
         choices: [
-            { text: 'They thank you for the perfect notes.', nextId: 21 }
+            { text: 'They thank you for the notes.', nextId: 21 }
         ]
     },
     {
         id: 21,
-        ascii: ``,
-        text: "But your friend doesn't learn the material as well. They passively read your flawless notes instead of actively engaging in the struggle of creating their own... This convenience might have a hidden cost.",
+        ascii: `
+ [ PDF SENT ]
+`,
+        text: "Your friend reads your notes but doesn't struggle through the concepts. They fail the test. You pass, but you realize: Efficiency in 'sharing' information is not the same as 'learning' information.",
         choices: [
-            { text: 'Continue on this path.', nextId: 9 }
+            { text: 'Continue to finals...', nextId: 9 }
         ]
     },
     {
@@ -565,7 +558,7 @@ D <--- C
   * *
       *
 `,
-        text: "During finals week, the repetition of writing on pen and paper, as well as digesting the material and taking notes your own way was excellent for your learning, you scored a perfect on the final!",
+        text: "During finals, the repetition of writing and digesting the material led to a perfect score!",
         choices: [
             { text: 'See the conclusion.', nextId: 999 }
         ]
@@ -578,14 +571,13 @@ D <--- C
  |:_/ |
 //   \\ \\
 `,
-        text: "CONCLUSION: This interactive story illustrates a key concept in cognitive science. The physical act of writing by hand engages the brain in ways that typing does not, leading to better memory formation and conceptual understanding, especially in abstract subjects like mathematics. There are research to back it up too! Here's one: Stacy EM, Cain J. Note-taking and Handouts in The Digital Age. Am J Pharm Educ. 2015 Sep 25;79(7):107. doi: 10.5688/ajpe797107. PMID: 27168620; PMCID: PMC4812780.",
+        text: "CONCLUSION: The physical act of writing engages the brain in ways typing does not (Stacy EM, Cain J. 2015). However, analog has risks—like losing your notebook—but the cognitive benefits often outweigh the convenience of digital files.",
         choices: [
-            { text: 'View Credits', nextId: 1000 } // This is the one required change to the story data
+            { text: 'View Credits', nextId: 1000 }
         ]
     }
 ];
 
-// Start the story
 startStory();
 </script>
 </body>
